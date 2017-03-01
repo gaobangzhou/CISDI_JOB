@@ -1,0 +1,48 @@
+#foreach($resumeInfo in $ResumeList)
+<tr>
+	<td class="center">$!{resumeInfo.getrName()}</td>
+	#if($!{resumeInfo.getrEducation()}=="bachelor")
+	<td class="center">本科</td> #end
+	#if($!{resumeInfo.getrEducation()}=="master")
+	<td class="center">硕士</td> #end
+	#if($!{resumeInfo.getrEducation()}=="doctor")
+	<td class="center">博士</td> #end
+	<td class="center">$!{resumeInfo.getEdSchool()}</td>
+	<td class="center">$!{resumeInfo.getEdSubject()}</td>
+	<td class="center">$!{resumeInfo.getrEnglishLVL()}</td>
+	<td>#if($!{resumeInfo.getChoiceType()}=="FC") <span
+		class="badge-purple label">1</span> #else <span
+		class="badge-success label">2</span> #end $!{resumeInfo.getJobName()}
+	</td>
+		<td class="center">$!{resumeInfo.getrRecruitment()}</td>
+	<td class="center">$!{resumeInfo.getCreateCom()}</td>
+	<td class="center">	#if($!{resumeInfo.getStatus()}=="used")
+					<span class="label label-xm label-info center">待处理</span>
+					#elseif($!{resumeInfo.getStatus()}=="reject")
+					<span class="label label-xm label-warning center">已拒绝</span>
+				    #elseif($!{resumeInfo.getStatus()}=="adopt")
+				    <span class="label label-xm label-success center">已通过</span>
+				    #else
+				     <span class="label label-xm label-default center">已删除</span>
+				    #end</td>
+	<td class="center"><div class="action-buttons">
+	                       #if($!{resumeInfo.getStatus()}=="used")
+							<a class="green" href="#" title="通过" onclick="manageApply('$!{resumeInfo.getrApplyGuid()}','adopt');" >
+								<i class="glyphicon glyphicon-ok-sign bigger-140"></i>
+							</a> 
+							
+							<a class="red" href="#" title="拒绝"  onclick="manageApply('$!{resumeInfo.getrApplyGuid()}','reject');">
+								<i class="glyphicon glyphicon-minus-sign bigger-140" ></i>
+							</a> 
+							#end
+							 #if($!{resumeInfo.getStatus()}!="used"&&$!{resumeInfo.getStatus()}!="unused")
+							<a class="red" href="#" title="还原"  onclick="manageApply('$!{resumeInfo.getrApplyGuid()}','used');">
+								<i class="ace-icon fa  fa-share bigger-140" ></i>
+							</a> 
+							#end
+							<a class="popdiv" title="查看简历" href="#modal-wizard" data-toggle="modal"> 
+								<i class="glyphicon glyphicon-hand-down blue bigger-140" ></i>
+							</a>
+					</div></td>
+</tr>
+#end

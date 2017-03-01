@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cisdijob.dao.SummaryDAO">
+
+
+	<select id="getJobCountByStatus" parameterType="String"
+		resultType="Integer">
+		select count(1) from WX_JOB_T t
+			where t.jstatus = #{status}
+	</select>
+
+	<select id="getApplyJobCount" resultType="Integer">
+		select count(distinct
+		t.jobguid) from WX_MY_APPLY_T t where t.status ='used'
+	</select>
+
+	<select id="getApplyCountByStatus" parameterType="String"
+		resultType="Integer">
+		select count(1) from WX_MY_APPLY_T t	
+			where t.status = #{status}
+	</select>
+	
+	<select id="getAdminCount" resultType="Integer">
+		select count(1) from
+		WX_USER_T t
+	</select>
+
+	<select id="getRecruitmentCount" parameterType="String"
+		resultType="Integer">
+		select count(1) from WX_RECRUITMENT_T t 
+			where t.recstatus = #{status}
+	</select>
+	
+	<select id="getLookupCountByType" parameterType="String"
+		resultType="Integer">
+		select COUNT(1)
+		from wx_look_up_types_t lp, wx_look_up_values_t lv
+		where lp.lpt_guid = lv.lpv_ltguid	
+			AND lp.lpt_type = #{type}
+		
+	</select>
+	<select id="getTopHotJob"
+		resultType="Map">
+select * from (select count(tm.jobguid) as jn,  tm.jname
+  from (select mat.jobguid, jt.jname
+          from WX_MY_APPLY_T mat, wx_job_t jt
+         where mat.jobguid = jt.jguid
+           and mat.status = 'used'
+           and jt.jstatus = 'used') tm 
+           group by tm.jobguid,tm.jname order by jn desc ) where rownum &lt; 4
+	</select>
+</mapper>

@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cisdijob.dao.LookupTypeDAO">
+<!-- 	<insert id="insertLookupType" parameterType="LookupType"
+		keyProperty="LPT_GUID">
+		insert into WX_LOOK_UP_TYPES_T
+		(LPT_GUID,LPT_TYPE,LPT_DECRIPTION,LPT_CREATETIME,LPT_CREATEPERSON)
+		values (sys_guid(),'42234sd','6789765',sysdate,'78765')
+	</insert> -->
+	<resultMap type="Selection" id="DropdownList">
+		<result column="code" property="code" />
+		<result column="value" property="value" />
+	</resultMap>
+	
+	<select id="getDropListByType" parameterType="String" resultMap="DropdownList">
+		SELECT LV.LPV_CODE as CODE,LV.LPV_MEANING AS VALUE FROM WX_LOOK_UP_TYPES_T
+		LT,WX_LOOK_UP_VALUES_T LV WHERE LT.LPT_GUID =LV.LPV_LTGUID AND
+		LT.LPT_TYPE =#{type}
+	</select>
+	
+		<select id="getSelectionCount" parameterType="String"  resultType="Integer">
+	select count(1)
+    from wx_look_up_types_t lt, wx_look_up_values_t lv
+   where lt.lpt_guid = lv.lpv_ltguid
+   and lt.lpt_type = #{type}
+
+</select>
+
+</mapper>

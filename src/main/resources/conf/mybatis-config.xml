@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE configuration 
+PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-config.dtd">
+<configuration>
+	<!-- 命名空间 -->
+	<typeAliases>
+		<typeAlias alias="AdminUser" type="com.cisdijob.model.entity.AdminUser" />
+		<typeAlias alias="AccessToken" type="com.cisdijob.model.base.AccessToken" />
+		<typeAlias alias="Job" type="com.cisdijob.model.entity.Job" />
+		<typeAlias alias="MyApply" type="com.cisdijob.model.entity.MyApply" />
+		<typeAlias alias="Selection" type="com.cisdijob.model.base.Selection" />
+		<typeAlias alias="Resume" type="com.cisdijob.model.entity.Resume" />
+		<typeAlias alias="Recruitment" type="com.cisdijob.model.entity.Recruitment" />	
+		<typeAlias alias="ResumeInfo" type="com.cisdijob.model.entity.ResumeInfo" />	
+		<typeAlias alias="Company" type="com.cisdijob.model.entity.Company" />
+        <typeAlias alias="ResumeRow" type="com.cisdijob.model.entity.ResumeRow" />	
+        <typeAlias alias="LookUpValue" type="com.cisdijob.model.entity.LookUpValue" />
+        <typeAlias alias="ResumeResult" type="com.cisdijob.model.entity.ResumeResult" />	
+	</typeAliases>
+	<!-- 映射map -->
+	<mappers>
+	</mappers>
+</configuration>

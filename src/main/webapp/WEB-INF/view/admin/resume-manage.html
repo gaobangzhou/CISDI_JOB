@@ -1,0 +1,249 @@
+<script type="text/javascript">
+	ace.vars['base'] = '${request.getContextPath()}';
+</script>
+<div class="breadcrumbs" id="breadcrumbs" style="margin-top: 5px;">
+	<script type="text/javascript">
+		try {
+			ace.settings.check('breadcrumbs', 'fixed')
+		} catch (e) {
+		}
+	</script>
+
+	<ul class="breadcrumb">
+		<li><i class="ace-icon fa fa-home home-icon"></i> <a href="#">招聘管理</a>
+		</li>
+		<li class="active">申请管理</li>
+	</ul>
+		<div class="col-sm-1 pull-right">
+				<button data-toggle="dropdown"
+					class="btn btn-success btn-sm dropdown-toggle">
+					导出报表 <i class="ace-icon fa fa-angle-down icon-on-right"></i>
+				</button>
+
+				<ul class="dropdown-menu dropdown-success dropdown-menu-bottom">
+					<li onclick="downloadResult()"><a href="#">导出搜索结果</a></li>
+					<li class="divider"></li>
+					<li><a href="download">导出所有简历</a></li>
+				</ul>
+		</div>
+</div>
+<script src="${request.getContextPath()}/resources/js/elements/table.js"
+	type="text/javascript"></script>
+<script src="${request.getContextPath()}/resources/js/admin-resume.js"
+	type="text/javascript"></script>
+<div class="col-xs-12" style="margin-top: 5px;">
+	<form class="form-horizontal">
+		<div class="form-group">
+			<label class="col-sm-1 control-label" for="form-field-select-1">
+				公司名称</label>
+			<div class="col-sm-2 no-padding-left">
+				<select name="CompanyName" class="form-control" id="CompanyName"
+					onchange="onSelectChange()">
+					<option value="">所有公司</option> #foreach($company in $CompanyList)
+					<option value="${company.getOuId()}">${company.getName()}</option>
+				 #end
+				</select>
+
+			</div>
+			<label class="col-sm-1 control-label" for="form-field-select-2">
+				简历状态</label>
+			<div class="col-sm-2 no-padding-left">
+				<select name="ResumeStatus" class="form-control" id="ResumeStatus"
+					onchange="onSelectChange()">
+					<option value="">所有简历</option>
+					<option value="used" selected="selected">待处理</option>
+					<option value="adopt">已通过</option>
+					<option value="reject">已拒绝</option>
+				</select>
+
+			</div>
+			<label class="col-sm-1 control-label" for="form-field-select-2">
+				志愿</label>
+			<div class="col-sm-2 no-padding-left">
+				<select name="ChoiceType" class="form-control" id="ChoiceType"
+					onchange="onSelectChange()">
+					<option value="">所有志愿</option>
+					<option value="FC">第一志愿</option>
+					<option value="SC">第二志愿</option>
+				</select>
+
+			</div>
+				<label class="col-sm-1 control-label" for="form-field-select-2">
+				专场信息</label>
+			<div class="col-sm-2 no-padding-left">
+				<select name="Recruit" class="form-control" id="Recruitment"
+					onchange="onSelectChange()">
+					<option value="all">所有专场</option>
+					#foreach($Recruit in $RecruitList)
+					<option value="${Recruit.getRECNAME()}">${Recruit.getRECNAME()}</option>
+					#end
+					<option value="society">社会招聘</option>
+				</select>
+
+			</div>
+		</div>
+	</form>
+</div>
+<div id="storage-search-table" class="row">
+	<input id="searchUrl" type="hidden" value="ResumeInfoSearch"> <input
+		id="searchPagination" type="hidden" value="ResumeInfoPagination">
+	<div class="table-responsive">
+		<table id="dataSourceTable"
+			class="table table-striped table-bordered table-hover">
+			<thead>
+				<tr>
+					<th width="8%" class="center" id="">姓名</th>
+					<th width="6%" class="center" id="">最高学历</th>
+					<th width="15%" class="center" id="">学校</th>
+					<th width="8%" class="center" id="">专业</th>
+					<th width="6%" class="center" id="">英语水平</th>
+					<th width="10%" class="center" id="">志愿</th>
+					<th width="10%" class="center" id="">场次</th>
+					<th width="10%" class="center" id="">发布公司</th>
+					<th width="6%" class="center" id="">申请状态</th>
+					<th width="8%" class="center">操作</th>
+				</tr>
+			</thead>
+			<tbody>
+				#foreach($resumeInfo in $ResumeList)
+				<tr>
+					<td class="center">$!{resumeInfo.getrName()}</td>
+					#if($!{resumeInfo.getrEducation()}=="bachelor")
+					<td class="center">本科</td> #end
+					#if($!{resumeInfo.getrEducation()}=="master")
+					<td class="center">硕士</td> #end
+					#if($!{resumeInfo.getrEducation()}=="doctor")
+					<td class="center">博士</td> #end
+					<td class="center">$!{resumeInfo.getEdSchool()}</td>
+					<td class="center">$!{resumeInfo.getEdSubject()}</td>
+					<td class="center">$!{resumeInfo.getrEnglishLVL()}</td>
+					<td>#if($!{resumeInfo.getChoiceType()}=="FC") <span
+						class="badge-purple label">1</span> #else <span
+						class="badge-success label">2</span> #end
+						$!{resumeInfo.getJobName()}
+					</td>
+						<td class="center">$!{resumeInfo.getrRecruitment()}</td>
+					<td class="center">$!{resumeInfo.getCreateCom()}</td>
+					<td class="center">#if($!{resumeInfo.getStatus()}=="used") <span
+						class="label label-sm label-info center">待处理</span>
+						#elseif($!{resumeInfo.getStatus()}=="reject") <span
+						class="label label-sm label-warning center">已拒绝</span>
+						#elseif($!{resumeInfo.getStatus()}=="adopt") <span
+						class="label label-sm label-success center">已通过</span> #else <span
+						class="label label-sm label-default center">已删除</span> #end
+					</td>
+					<td class="center">
+						<div class="action-buttons">
+							#if($!{resumeInfo.getStatus()}=="used") <a class="green" href="#"
+								title="通过"
+								onclick="manageApply('$!{resumeInfo.getrApplyGuid()}','adopt');">
+								<i class="glyphicon glyphicon-ok-sign bigger-140"></i>
+							</a> <a class="red" href="#" title="拒绝"
+								onclick="manageApply('$!{resumeInfo.getrApplyGuid()}','reject');">
+								<i class="glyphicon glyphicon-minus-sign bigger-140"></i>
+							</a> #end
+							#if($!{resumeInfo.getStatus()}!="used"&&$!{resumeInfo.getStatus()}!="unused")
+							<a class="red" href="#" title="还原"
+								onclick="manageApply('$!{resumeInfo.getrApplyGuid()}','used');">
+								<i class="ace-icon fa  fa-share bigger-140"></i>
+							</a> #end <a class="popdiv" title="查看简历" href="#modal-wizard"
+								data-toggle="modal" onclick="ShowResume('$!{resumeInfo.getrOpenId()}');"> <i
+								class="glyphicon glyphicon-hand-down blue bigger-140"></i>
+							</a>
+						</div>
+					</td>
+				</tr>
+				#end
+			</tbody>
+		</table>
+		<div id="table-loader" class="col-xs-12"
+			style="text-align: center; margin-top: 6%; display: none; margin-bottom: 6%">
+			<img
+				src="${request.getContextPath()}/resources/images/ajax-loader.gif" />
+		</div>
+		<div class="footer-content">
+			<ul id="page" class="pagination">
+				<li><span>每页</span></li>
+				<li><select id="pagePerNumber" value="${pagination.number}"
+					onchange="pageTurn(this.value,1)">
+						#if(${pagination.number}==10)
+						<option value="10" selected="selected">10</option>
+						<option value="20">20</option>
+						<option value="50">50</option> #elseif(${pagination.number}==20)
+						<option value="10">10</option>
+						<option value="20" selected="selected">20</option>
+						<option value="50">50</option> #else if(${pagination.number}==50)
+						<option value="10">10</option>
+						<option value="20">20</option>
+						<option value="50" selected="selected">50</option> #end
+				</select></li>
+				<li><span>项</span></li>
+				<li><span>共&nbsp;${pagination.pages} &nbsp;页</span></li>
+
+				#if(${pagination.pageNum} == 1)
+				<li class="disabled"><a href="" onclick="return false;"><<</a></li>
+				<li class="disabled"><a href="" onclick="return false;"><</a></li>
+				#else
+				<li><a href="#" onclick="pageTurn(${pagination.number},1)"><<</a></li>
+				<li><a href="#"
+					onclick="pageTurn(${pagination.number},${pagination.preNum})"><</a></li>
+				#end #foreach($num in ${pagination.indexList})
+				#if($pagination.pageNum==$num)
+				<li id="active" class="active"><a href=""
+					onclick="return false;">$num</a></li> #else
+				<li><a href="javascript:void(0);"
+					onclick="pageTurn(${pagination.number},$num)">$num</a></li> #end #end
+				#if(${pagination.pageNum}
+				==${pagination.pages}||${pagination.pages}==0)
+				<li class="disabled"><a href="#" onclick="return false;">></a></li>
+				<li class="disabled"><a href="#" onclick="return false;">>></a></li>
+				#else
+				<li><a href="#"
+					onclick="pageTurn(${pagination.number},${pagination.nextNum})">></a></li>
+				<li><a href="#"
+					onclick="pageTurn(${pagination.number},${pagination.pages})">>></a></li>
+				#end
+				<li><span>跳转到：</span></li>
+				<li><span class="custom"> <input id="pagetext"
+						type="text" size="3"
+						style="height: 18px; width: 40px; line-height: 15px; margin: -2px 0 0 0; padding: 1px; font-size: 12px; text-align: center;">
+				</span></li>
+				<li><a id="goToPage" href="javascript:void(0);"
+					onclick="pageTurn(${pagination.number},parseInt($('#pagetext').val()))">GO</a></li>
+			</ul>
+		</div>
+	</div>
+</div>
+
+<!-- 简历详情查看和编辑 -->
+<div id="modal-wizard" class="modal">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header" data-target="#modal-step-contents">
+				<div class="table-header" align="center">
+					<button type="button" class="close" data-dismiss="modal"
+						aria-hidden="true">
+						<span class="white">&times;</span>
+					</button>
+					简历详情
+				</div>
+			</div>
+
+			<div class="modal-body step-content" id="modal-step-contents">
+				<div class="step-pane active">
+					<div id="ResumeInfo" class="center">
+						
+
+					</div>
+				</div>
+			</div>
+
+			<div class="modal-footer wizard-actions">
+				<button class="btn btn-danger btn-sm pull-right"
+					data-dismiss="modal">
+					<i class="ace-icon fa fa-times"></i> 取消
+				</button>
+			</div>
+		</div>
+	</div>
+</div>

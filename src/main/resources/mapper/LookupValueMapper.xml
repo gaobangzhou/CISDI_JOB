@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cisdijob.dao.LookUpValueDAO">
+	<resultMap type="LookUpValue" id="lookupValueList">
+		<result column="LPV_GUID" property="lpv_guid" />
+		<result column="LPV_LTGUID" property="lpv_ltguid" />
+		<result column="LPV_CODE" property="lpv_code" />
+		<result column="LPV_MEANING" property="lpv_meaning" />
+		<result column="LPV_CREATETIME" property="lpv_createTiem" />
+		<result column="LPV_CREATEPERSON" property="lpv_createPerson" />
+	</resultMap>
+
+	<select id="getLookUpValues" parameterType="String" resultMap="lookupValueList">
+		 select
+		lup.lpv_guid,lup.lpv_ltguid,lup.lpv_code,lup.lpv_meaning,lup.lpv_createtime,lup.lpv_createperson
+		from wx_look_up_values_t lup,wx_look_up_types_t lut where
+		lup.lpv_ltguid=lut.lpt_guid and lut.lpt_type=#{lpt_type}
+		<!-- select
+    lup.lpv_guid,lup.lpv_ltguid,lup.lpv_code,lup.lpv_meaning,lup.lpv_createtime,lup.lpv_createperson
+    from wx_look_up_values_t lup where lup.lpv_ltguid=#{lpt_type} -->
+	</select>
+	<insert id="insertLookupValue" parameterType="LookUpValue"
+		keyProperty="LPV_GUID">
+		insert into
+		wx_look_up_values_t(lpv_guid,lpv_ltguid,lpv_code,lpv_meaning,lpv_createtime,lpv_createperson)
+		values(sys_guid(),(select lut.lpt_guid from wx_look_up_types_t lut
+		where
+		lut.lpt_type=#{lpt_type}),#{lpv_code},#{lpv_meaning},sysdate,#{lpv_createPerson})
+	</insert>
+	<select id="selectLookupValue" parameterType="Map" resultMap="lookupValueList">
+		select
+		lup.lpv_guid,lup.lpv_ltguid,lup.lpv_code,lup.lpv_meaning,lup.lpv_createtime,lup.lpv_createperson
+		from wx_look_up_values_t lup,wx_look_up_types_t lut where
+		lup.lpv_ltguid=lut.lpt_guid
+		<if test="lpt_type!=null and lpt_type!='' ">
+			and lut.lpt_type=#{lpt_type}
+		</if>
+		<if test="lpv_code!=null and lpv_code!='' ">
+			and lup.lpv_code=#{lpv_code}
+		</if>
+	</select>
+</mapper>

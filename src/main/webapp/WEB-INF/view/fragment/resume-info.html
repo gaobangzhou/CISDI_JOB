@@ -1,0 +1,118 @@
+<div class="profile-user-info profile-user-info-striped">
+							<div class="profile-info-row">
+								<div class="profile-info-name">姓名</div>
+
+								<div class="profile-info-value">
+									<span class="pink" id="username">$!{Resume.getrName()}</span>
+								</div>
+							</div>
+
+							<div class="profile-info-row">
+								<div class="profile-info-name">籍贯</div>
+
+								<div class="profile-info-value">
+									<i class="fa fa-map-marker light-orange bigger-130"></i> <span
+										class="editable" id="country">$!{Resume.getrNativePlace()}</span>
+								</div>
+							</div>
+
+							<div class="profile-info-row">
+								<div class="profile-info-name">性别</div>
+
+								<div class="profile-info-value">
+									<span class="editable" id="age">$!{Resume.getrNativePlace()}</span>
+								</div>
+							</div>
+
+							<div class="profile-info-row">
+								<div class="profile-info-name">最高学历</div>
+
+								<div class="profile-info-value">
+								<i class="ace-icon fa fa-graduation-cap red bigger-130"></i>
+								#if($!{Resume.getrEducation()}=='bachelor')
+									<span class="red id="signup">本科</span>
+								#end
+								#if($!{Resume.getrEducation()}=='master')
+									<span class="red id="signup">硕士</span>
+								#end
+								#if($!{Resume.getrEducation()}=='doctor')
+									<span class="red id="signup">博士</span>
+								#end
+								</div>
+							</div>
+							#if($!{Resume.getrEducation()}=='bachelor'||$!{Resume.getrEducation()}=='master'||$!{Resume.getrEducation()}=='doctor')
+							<div class="profile-info-row">
+								<div class="profile-info-name">本科</div>
+
+								<div class="profile-info-value">
+									<span class="orange ">$!{Resume.getrBachelorSchool()}</span>
+									<span >$!{Resume.getrBachelorSubject()}</span>
+								</div>
+							</div>
+							#end
+							#if($!{Resume.getrEducation()}=='doctor'||$!{Resume.getrEducation()}=='master')
+							<div class="profile-info-row">
+								<div class="profile-info-name">硕士</div>
+
+								<div class="profile-info-value">
+									<span class="orange ">$!{Resume.getrMasterSchool()}</span>
+									<span >$!{Resume.getrMasterSubject()}</span>
+								</div>
+							</div>
+							#end
+							#if($!{Resume.getrEducation()}=='doctor')
+							<div class="profile-info-row">
+								<div class="profile-info-name">博士</div>
+
+								<div class="profile-info-value">
+									<span class="orange ">$!{Resume.getrDoctorSchool()}</span>
+									<span >$!{Resume.getrDoctorSubject()}</span>
+								</div>
+							</div>
+							#end
+							<div class="profile-info-row">
+								<div class="profile-info-name">英语水平</div>
+
+								<div class="profile-info-value">
+									<span >$!{Resume.getrEnglishLVL()}</span>
+									<span >$!{Resume.getrEnglishScore()} 分</span>
+								</div>
+							</div>
+
+							<div class="profile-info-row">
+								<div class="profile-info-name">在校成绩</div>
+
+								<div class="profile-info-value">
+								 #foreach($selection in $ScoreList)
+								#if(${selection.getCode()}==$!{Resume.getrScore()})
+									<span >$!{selection.getValue()}</span>
+								 #end
+								 #end
+									
+								</div>
+							</div>
+							<div class="profile-info-row">
+								<div class="profile-info-name">电话</div>
+
+								<div class="profile-info-value">
+								<i class="ace-icon fa fa-phone red bigger-130"></i>
+									<span class="editable" id="about">$!{Resume.getrPhoneNum()}</span>
+								</div>
+							</div>
+							<div class="profile-info-row">
+								<div class="profile-info-name">电子邮件</div>
+
+								<div class="profile-info-value">
+								<i class="ace-icon fa fa-envelope-o green bigger-130"></i>
+									<span class="editable" id="about">$!{Resume.getrEmail()}</span>
+								</div>
+							</div>
+						
+							<div class="profile-info-row">
+								<div class="profile-info-name">其他</div>
+
+								<div class="profile-info-value">
+								$!{Resume.getrOthers()}
+									</div>
+							</div>
+						</div>

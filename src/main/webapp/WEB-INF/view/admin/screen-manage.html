@@ -1,0 +1,149 @@
+<div class="breadcrumbs" id="breadcrumbs" style="margin-top: 5px;">
+	<script type="text/javascript">
+		try {
+			ace.settings.check('breadcrumbs', 'fixed')
+		} catch (e) {
+		}
+	</script>
+
+	<ul class="breadcrumb">
+		<li><i class="ace-icon fa fa-home home-icon"></i> <a href="#">职位管理</a>
+		</li>
+
+		<li class="active">场次管理</li>
+	</ul>
+</div>
+
+<div class="container-fluid">
+	<div class="row">
+		<div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
+			<h2>已有场次</h2>
+			<hr>
+			<div class="row placeholders">
+				<ul class="ace-thumbnails clearfix">
+					<li><a data-rel="colorbox"> <img width="150" height="150"
+							alt="150x150"
+							src="${request.getContextPath()}/resources/images/management.png" />
+							<div class="text">
+								<div class="inner">
+									<h3>重大专场</h3>
+									<h5>学术报告厅</h5>
+									<h5>2015-09-29</h5>
+								</div>
+							</div>
+					</a>
+						<div class="tools tools-top">
+							<a href="#"> <i class="ace-icon fa fa-pencil"></i>
+							</a> <a href="#"> <i class="ace-icon fa fa-times red"></i>
+							</a>
+						</div></li>
+
+					<li><a data-rel="colorbox"> <img width="150" height="150"
+							alt="150x150"
+							src="${request.getContextPath()}/resources/images/technology.png" />
+							<div class="text">
+								<div class="inner">
+									<h3>清华专场</h3>
+									<h5>学术报告厅</h5>
+									<h5>2015-09-29</h5>
+								</div>
+							</div>
+					</a>
+						<div class="tools tools-top">
+							<a href="#"> <i class="ace-icon fa fa-pencil"></i>
+							</a> <a href="#"> <i class="ace-icon fa fa-times red"></i>
+							</a>
+						</div></li>
+					<li><a data-rel="colorbox"> <img width="150" height="150"
+							alt="150x150"
+							src="${request.getContextPath()}/resources/images/marketing.png" />
+							<div class="text">
+								<div class="inner">
+									<h3>上海交大专场</h3>
+									<h5>圆顶大礼堂</h5>
+									<h5>2015-09-29</h5>
+								</div>
+							</div>
+					</a>
+						<div class="tools tools-top">
+							<a href="#"> <i class="ace-icon fa fa-pencil"></i>
+							</a> <a href="#"> <i class="ace-icon fa fa-times red"></i>
+							</a>
+						</div></li>
+					<li><a data-rel="colorbox"> <img width="150" height="150"
+							alt="150x150"
+							src="${request.getContextPath()}/resources/images/financial.png" />
+							<div class="text">
+								<div class="inner">
+									<h3>上海交大专场</h3>
+									<h5>圆顶大礼堂</h5>
+									<h5>2015-09-29</h5>
+								</div>
+							</div>
+					</a>
+						<div class="tools tools-top">
+							<a href="#"> <i class="ace-icon fa fa-pencil"></i>
+							</a> <a href="#"> <i class="ace-icon fa fa-times red"></i>
+							</a>
+						</div></li>
+
+				</ul>
+			</div>
+			<!-- PAGE CONTENT ENDS -->
+			<hr>
+			<h2>添加场次</h2>
+			<hr>
+			<div class="row">
+				<div class="col-sm-3">
+					<p>选择图片</p>
+					<a href="#"><img alt="60x60" width="60" height="60"
+						src="${request.getContextPath()}/resources/images/financial.png"></a>
+					<a href="#"><img alt="60x60" width="60" height="60"
+						src="${request.getContextPath()}/resources/images/marketing.png"></a>
+					<a href="#"><img alt="60x60" width="60" height="60"
+						src="${request.getContextPath()}/resources/images/financial.png"></a>
+					
+					<a href="#"><img alt="60x60" width="60" height="60"
+						src="${request.getContextPath()}/resources/images/technology.png"></a>
+					<a href="#"><img alt="60x60" width="60" height="60"
+						src="${request.getContextPath()}/resources/images/financial.png"></a>
+					<a href="#"><img alt="60x60" width="60" height="60"
+						src="${request.getContextPath()}/resources/images/management.png" /></a>
+					
+					<a href="#"><img alt="60x60" width="60" height="60"
+						src="${request.getContextPath()}/resources/images/financial.png"></a>
+					<a href="#"><img alt="60x60" width="60" height="60"
+						src="${request.getContextPath()}/resources/images/management.png" /></a>
+					<a href="#"><img alt="60x60" width="60" height="60"
+						src="${request.getContextPath()}/resources/images/financial.png"></a>
+				</div>
+				<div class="col-sm-4">
+					<p>场次信息</p>
+					<div class="row">
+						<input type="text" id="screen" class="form-control"
+							placeholder="XX专场">
+					</div>
+					<br>
+					<div class="row">
+						<input type="text" id="s_place" class="form-control"
+							placeholder="宣讲会具体地点">
+					</div>
+					<br>
+					<div class="row">
+						<input type="text" id="s_time" class="form-control"
+							placeholder="宣讲会时间">
+					</div>
+					<br>
+					<div>
+						<button class="btn btn-success btn-sm pull-right"
+							data-last="Finish" id="btnsubmit">添加</button>
+					</div>
+				</div>
+			</div>
+
+		</div>
+		<!-- /.col -->
+	</div>
+	<!-- /.row -->
+</div>
+<!-- /.page-content-area -->

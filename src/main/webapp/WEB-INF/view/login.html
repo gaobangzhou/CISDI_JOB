@@ -1,0 +1,52 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta http-equiv="X-UA-Compatible" content="IE=8" />
+<title>微信后台管理系统</title>
+<link rel="stylesheet"
+	href="${request.getContextPath()}/resources/css/login.css"/>
+<link rel="stylesheet"
+	href="${request.getContextPath()}/resources/assets/css/bootstrap.min.css" />
+   <script src="${request.getContextPath()}/resources/assets/js/jquery.min.js"></script>
+<script
+	src="${request.getContextPath()}/resources/assets/js/bootstrap.min.js"></script>
+	
+</head>
+<body style =" background-image: url('${request.getContextPath()}/resources/assets/img/bg2.jpg');background-repeat: repeat;">
+
+	<form class="bs-example bs-example-form" role="form" id="login">
+		<h1>
+			<strong>CISDI</strong><br>微信后台管理系统
+		</h1>
+		</br>
+		<div class="input-group input-group-lg">
+		<span class="input-group-addon">
+		<i class="ace-icon glyphicon glyphicon-user"></i></span>
+			<input id="username" type="text" placeholder="用户名" class="form-control" autofocus required>
+		</div>
+		</br>
+		<div class="input-group input-group-lg">
+		<span class="input-group-addon">
+		<i class="ace-icon glyphicon glyphicon-lock"></i></span>
+			<!-- <input id="password" type="password" placeholder="密码" class="form-control" required> -->
+			<input id="password" class="form-control" type="password" placeholder="密码" required>
+		</div>
+		</br>
+		<div id="actions">
+			<input type="button" id="onlogin" value="登录" class="btn btn-primary btn-lg btn-block">
+		</div>
+		
+	</form> 
+
+	<!-- BSA AdPacks code -->
+	<script
+		src="${request.getContextPath()}/resources/assets/js/jquery-1.7.2.js"
+		type="text/javascript"></script>
+	<script src="${request.getContextPath()}/resources/js/ieplaceholder.js"
+		type="text/javascript"></script>
+		<script src="${request.getContextPath()}/resources/js/login.js"
+		type="text/javascript"></script>
+
+</body>
+</html>

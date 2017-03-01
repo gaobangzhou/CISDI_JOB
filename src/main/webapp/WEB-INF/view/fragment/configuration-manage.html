@@ -1,0 +1,13 @@
+<form action="">
+	<div class="table-responsive">
+		<table id="dataSourceTable"
+			class="table table-striped table-bordered table-hover">
+			#foreach($list in $ListConf)
+			<tr>
+				<td>$!{list.getLpv_meaning()}</td>
+				<td>$!{list.getLpv_code()}</td>
+			</tr>
+			#end
+		</table>
+	</div>
+</form>

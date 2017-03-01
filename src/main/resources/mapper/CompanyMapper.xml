@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cisdijob.dao.CompanyDAO">
+<!-- 	<insert id="insertLookupType" parameterType="LookupType"
+		keyProperty="LPT_GUID">
+		insert into WX_LOOK_UP_TYPES_T
+		(LPT_GUID,LPT_TYPE,LPT_DECRIPTION,LPT_CREATETIME,LPT_CREATEPERSON)
+		values (sys_guid(),'42234sd','6789765',sysdate,'78765')
+	</insert> -->
+	<resultMap type="Company" id="CompanyList">
+		<result column="OU_ID" property="ouId" />
+		<result column="OU_FULLNAME" property="fullName" />
+		<result column="OU_NAME" property="name" />
+	</resultMap>
+	
+	<select id="getAllCompany"  resultMap="CompanyList">
+		select * from WX_ORG_T t
+	</select>
+
+</mapper>

@@ -1,0 +1,117 @@
+
+
+<!-- #section:basics/navbar.layout -->
+<div id="navbar" class="navbar navbar-default navbar-collapse h-navbar">
+	<script type="text/javascript">
+		try {
+			ace.settings.check('navbar', 'fixed')
+		} catch (e) {
+		}
+	</script>
+	<div class="row top-row">
+		<div class="pull-right">
+			<a data-toggle="dropdown" href="#" class="dropdown-toggle"> <!--  <img class="nav-user-photo" src="${request.getContextPath()}/resources/assets/avatars/user.jpg" alt="Jason's Photo" />-->
+				<span class="badge badge-pink"><i
+					class="ace-icon fa fa-user bigger-120"></i><strong> &nbsp;
+						欢迎您，$!{user.name} </strong> <i class="ace-icon fa fa-caret-down"></i></span>
+			</a>
+
+			<ul
+				class="user-menu dropdown-menu-right dropdown-menu dropdown-yellow dropdown-caret dropdown-close-top">
+				<li><a href="#"> <i class="ace-icon fa fa-phone"></i>
+						$!{user.cellPhone}
+				</a></li>
+
+				<li><a href="#"> <i class="ace-icon fa fa-envelope"></i>
+						$!{user.mailAddress}
+				</a></li>
+
+				<li><a href="#"> <i class="ace-icon fa fa-bookmark"></i>
+						&nbsp;$!{user.title}
+				</a></li>
+
+				<li><a href="#"> <i class="ace-icon fa fa-sitemap"></i>
+						$!{user.deptName}
+				</a></li>
+
+				<li class="divider"></li>
+
+				<li><a href="${request.getContextPath()}/admin/logout"> <i class="ace-icon fa fa-power-off"></i>
+						Logout
+				</a></li>
+			</ul>
+		</div>
+	</div>
+	<div class="navbar-container" id="navbar-container">
+		<div class="navbar-header pull-left">
+			<!-- #section:basics/navbar.layout.brand -->
+
+			<a href="#" class="navbar-brand"> <img class="navbar-img"
+				src="${request.getContextPath()}/resources/images/logo_white_en.png"
+				alt="CISDI" /> <strong>中冶赛迪微信招聘平台</strong>
+			</a>
+
+		</div>
+		<!-- /section:basics/navbar.dropdown -->
+		<nav role="navigation" class="navbar-menu pull-left">
+			<!-- #section:basics/navbar.nav -->
+			<ul class="nav navbar-nav">
+
+				<li><a href="${request.getContextPath()}/admin/admin-home.html"> <i class="ace-icon fa fa-home"></i> 首页
+						&nbsp;
+				</a></li>
+				<li><a href="#" class="dropdown-toggle" data-toggle="dropdown">
+						<i class="ace-icon fa fa-folder-open"></i>&nbsp职位管理 &nbsp;<i
+						class="ace-icon fa fa-angle-down bigger-110"></i>
+				</a>
+					<ul class="dropdown-menu dropdown-light-blue dropdown-caret">
+						<li><a
+							href="${request.getContextPath()}/jobmanage/job-manage.html">
+								<i class="ace-icon fa fa-file-o bigger-110 blue"></i> 职位信息
+						</a></li>
+
+						<!-- <li><a
+							href="${request.getContextPath()}/jobmanage/screen-manage.html">
+								<i class="ace-icon fa fa-book bigger-110 blue"></i> 场次管理
+						</a></li> -->
+						<li><a
+							href="${request.getContextPath()}/rectmanage/recruitment.html">
+								<i class="ace-icon fa fa-book bigger-110 blue"></i> 场次管理
+						</a></li>
+					</ul></li>
+				<li><a href="#" class="dropdown-toggle" data-toggle="dropdown">
+						<i class="ace-icon fa fa-coffee"></i>&nbsp招聘管理 &nbsp;<i
+						class="ace-icon fa fa-angle-down bigger-110"></i>
+				</a>
+					<ul class="dropdown-menu dropdown-light-blue dropdown-caret">
+						<li><a
+							href="${request.getContextPath()}/resumemanage/resume-manage.html">
+								<i class="ace-icon fa  fa-envelope-o bigger-110 blue"></i> 简历管理
+						</a></li>
+					</ul></li>
+				<li><a href="#" class="dropdown-toggle" data-toggle="dropdown">
+						<i class="ace-icon fa  fa-cog"></i> 配置管理 &nbsp;<i
+						class="ace-icon fa fa-angle-down bigger-110"></i>
+				</a>
+					<ul class="dropdown-menu dropdown-light-blue dropdown-caret">
+
+						<!-- <li><a
+							href="${request.getContextPath()}/confmanage/info-manage.html">
+								<i class="ace-icon fa fa-pencil-square-o bigger-110 blue"></i> 信息管理
+						</a></li> -->
+						
+						<li><a
+							href="#">
+								<i class="ace-icon fa fa-pencil-square-o bigger-110 blue"></i> 信息管理
+						</a></li>
+					</ul></li>
+
+			</ul>
+
+			<!-- /section:basics/navbar.nav -->
+
+		</nav>
+
+	</div>
+	<!-- /.navbar-container -->
+</div>

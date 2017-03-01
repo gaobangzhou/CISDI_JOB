@@ -1,0 +1,435 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cisdijob.dao.JobDAO">
+	<resultMap type="Job" id="resultListJob">
+		<result column="JGUID" property="JGUID" />
+		<result column="JNAME" property="JNAME" />
+		<result column="JTYPE" property="JTYPE" />
+		<result column="JPLACE" property="JPLACE" />
+		<result column="JPAYMENT" property="JPAYMENT" />
+		<result column="JSTATUS" property="JSTATUS" />
+		<result column="JCREATE_COM" property="JCREATE_COM" />
+		<result column="JCREATE_TIME" property="JCREATE_TIME" />
+		<result column="JCREATE_PERSON" property="JCREATE_PERSON" />
+		<result column="JUPDATEPERSOW" property="JUPDATEPERSOW" />
+		<result column="JUPDATETIME" property="JUPDATETIME" />
+		<result column="JDESCRIPTION" property="JDESCRIPTION" />
+		<result column="JCAPACITY" property="JCAPACITY" />
+		<result column="JPROFESSIONAL" property="JPROJECT" />
+		<result column="JRECRUITMENT_TYPE" property="JRECRUITMENT_TYPE" />
+		<result column="JEDUCATION" property="JEDUCATION" />
+		<result column="JPRIORITY" property="JPRIORITY" />
+		<result column="GUID" property="jrguid" />
+	</resultMap>
+
+	<select id="getJobListByMap" parameterType="Map" resultMap="resultListJob">
+		select * from (select rownum as rn, jt.jguid,
+		jt.jname,
+		(select
+    vt.lpv_meaning
+    from wx_look_up_values_t vt,wx_look_up_types_t lp
+    where  vt.lpv_code = jt.jtype and vt.lpv_ltguid =lp.lpt_guid and lp.lpt_type ='JOB_TYPE')
+		jtype,
+		(select vt.lpv_meaning
+    from wx_look_up_values_t vt ,wx_look_up_types_t lp
+    where
+    vt.lpv_code = jt.jplace and vt.lpv_ltguid =lp.lpt_guid and lp.lpt_type ='WORK_PALCE') jplace,
+		jt.jpayment,
+		jt.jstatus,
+		(select
+		ot.ou_name from wx_org_t ot where ot.ou_id = jt.jcreate_com)
+		jcreate_com,
+		jt.jcreate_time,
+		jt.jcreate_person,
+		jt.jupdatepersow,
+		jt.jupdatetime,
+		jt.jdescription,
+		(select vt.lpv_meaning
+    from wx_look_up_values_t vt ,wx_look_up_types_t lp
+    where
+    vt.lpv_code = jt.jeducation and vt.lpv_ltguid =lp.lpt_guid and lp.lpt_type ='EDUCATION') jeducation,
+		jt.jcapacity,
+		   (select vt.lpv_meaning
+    from wx_look_up_values_t vt
+    where
+    vt.lpv_code = JT.JPROFESSIONAL) JPROFESSIONAL,
+		jt.jrecruitment_type
+		from
+		WX_JOB_T jt
+		where 1 = 1
+		<if test="company!=null and company !=''">
+			and jt.jcreate_com=#{company}
+		</if>
+		<if test="status!=null and status !='' ">
+			and jt.jstatus=#{status}
+		</if>
+		<if test="jobType!=null and jobType !='' ">
+			and jt.jtype=#{jobType}
+		</if>
+
+		) r where 1=1
+
+		<if test="startNumber !=null">
+			and r.rn >= #{startNumber}
+		</if>
+		<if test="perNumber !=null">
+			and rownum &lt;= #{perNumber}
+		</if>
+	</select>
+
+	<!-- 返回list 的select 语句，注意 resultMap 的值是指向前面定义好的 -->
+	<!-- society recruitment -->
+	<select id="selectSocietyJobs" resultMap="resultListJob">
+	select
+	jt.jguid,jt.jname,(select
+	vt.lpv_meaning
+	from wx_look_up_values_t vt,wx_look_up_types_t lp
+	where vt.lpv_code = jt.jtype and vt.lpv_ltguid =lp.lpt_guid and lp.lpt_type
+	='JOB_TYPE') jtype,(select vt.lpv_meaning
+	from wx_look_up_values_t vt ,wx_look_up_types_t lp
+	where
+	vt.lpv_code = jt.jplace and vt.lpv_ltguid =lp.lpt_guid and lp.lpt_type
+	='WORK_PALCE')
+	jplace,jt.jpayment,jt.jstatus,
+	(select ot.ou_name from wx_org_t ot
+	where ot.ou_id=jt.jcreate_com)
+	jcreate_com,jt.jcreate_time,jt.jcreate_person,jt.jupdatepersow,jt.jupdatetime,jt.jdescription,jt.jcapacity,jt.jrecruitment_type,(select
+	vt.lpv_meaning from wx_look_up_values_t vt where
+	vt.lpv_code=jt.jeducation) jeducation,jt.jpriority
+	from WX_JOB_T jt
+	where
+	jt.JSTATUS='used' and jt.JRECRUITMENT_TYPE='society' order by
+	jt.jpriority
+	</select>
+	<!-- campus rectuitment -->
+	<select id="selectCampusJobs" resultMap="resultListJob"
+		parameterType="String">
+		select jt.jguid,
+	       jt.jname,
+	       (select
+    vt.lpv_meaning
+    from wx_look_up_values_t vt,wx_look_up_types_t lp
+    where  vt.lpv_code = jt.jtype and vt.lpv_ltguid =lp.lpt_guid and lp.lpt_type ='JOB_TYPE') jtype,
+	       (select vt.lpv_meaning
+	from wx_look_up_values_t vt ,wx_look_up_types_t lp
+	where
+	vt.lpv_code = jt.jplace and vt.lpv_ltguid =lp.lpt_guid and lp.lpt_type
+	='WORK_PALCE') jplace,
+	       jt.jpayment,
+	       jt.jstatus,
+	       (select ot.ou_name from wx_org_t ot where ot.ou_id = jt.jcreate_com) jcreate_com,
+	       jt.jcreate_time,
+	       jt.jcreate_person,
+	       jt.jupdatepersow,
+	       jt.jupdatetime,
+	       jt.jdescription,
+	       jt.jcapacity,
+	       jt.jrecruitment_type,
+	       (select vt.lpv_meaning
+	          from wx_look_up_values_t vt
+	         where vt.lpv_code = jt.jeducation) jeducation,
+	       jt.jprofessional,
+	       jt.jpriority,
+	       jrt.guid
+	        from WX_JOB_T jt, wx_job_recruitment_rt jrt
+	    where jt.JSTATUS = 'used'
+	   and jrt.status = 'used'
+	   and jrt.jguid = jt.jguid
+	   and jt.JRECRUITMENT_TYPE = 'campus'
+     and jrt.reguid = #{rguid} order by
+		jt.jpriority
+	</select>
+	<!-- society job搜索 -->
+	<select id="searchSocietyJobs" resultMap="resultListJob"
+		parameterType="Map">
+		select * from	(
+           select jt.jguid,
+		       jt.jname,
+		       (select
+    vt.lpv_meaning
+    from wx_look_up_values_t vt,wx_look_up_types_t lp
+    where  vt.lpv_code = jt.jtype and vt.lpv_ltguid =lp.lpt_guid and lp.lpt_type ='JOB_TYPE') jtype,
+		       (select vt.lpv_meaning
+	from wx_look_up_values_t vt ,wx_look_up_types_t lp
+	where
+	vt.lpv_code = jt.jplace and vt.lpv_ltguid =lp.lpt_guid and lp.lpt_type
+	='WORK_PALCE') jplace,
+		       jt.jpayment,
+		       jt.jstatus,
+		       (select ot.ou_name from wx_org_t ot where ot.ou_id = jt.jcreate_com) jcreate_com,
+		       jt.jcreate_time,
+		       jt.jcreate_person,
+		       jt.jupdatepersow,
+		       jt.jupdatetime,
+		       jt.jdescription,
+		       jt.jcapacity,
+		       jt.jrecruitment_type,
+		       (select vt.lpv_meaning
+		          from wx_look_up_values_t vt
+		         where vt.lpv_code = jt.jeducation) jeducation,
+		       jt.jpriority,
+		       jt.jprofessional,
+		       '' as jrguid
+		  from WX_JOB_T jt
+		 where jt.JSTATUS = 'used'
+		   and jt.JRECRUITMENT_TYPE = 'society'
+		<if test=" companyCode !=null and companyCode !='' ">
+			and jt.jcreate_com=#{companyCode}
+		</if>
+		<if test=" typeCode !=null and typeCode!='' ">
+			and jt.jtype=#{typeCode}
+		</if>
+		<if test="education !=null and education!='' ">
+			and jt.jeducation=#{education}
+		</if>
+		) j where 1=1
+		<if test="keyWord !=null and keyWord !='' ">
+		   and	 (j.jname like '%'||#{keyWord}||'%'
+			or j.jplace like
+			'%'||#{keyWord}||'%'
+			or j.jtype like '%'||#{keyWord}||'%'
+			or
+			j.jcreate_com like '%'||#{keyWord}||'%'
+			or j.jprofessional like
+			'%'||#{keyWord}||'%'
+			or j.jeducation like '%'||#{keyWord}||'%'
+			)
+		</if>
+      order by
+    j.jpriority
+	
+	</select>
+	<!-- campus job 搜索 -->
+	<select id="searchCampusJobs" resultMap="resultListJob"
+		parameterType="Map">
+		select * from	(select jt.jguid,
+		       jt.jname,
+		       (select
+    vt.lpv_meaning
+    from wx_look_up_values_t vt,wx_look_up_types_t lp
+    where  vt.lpv_code = jt.jtype and vt.lpv_ltguid =lp.lpt_guid and lp.lpt_type ='JOB_TYPE') jtype,
+		       (select vt.lpv_meaning
+	from wx_look_up_values_t vt ,wx_look_up_types_t lp
+	where
+	vt.lpv_code = jt.jplace and vt.lpv_ltguid =lp.lpt_guid and lp.lpt_type
+	='WORK_PALCE') jplace,
+		       jt.jpayment,
+		       jt.jstatus,
+		       (select ot.ou_name from wx_org_t ot where ot.ou_id = jt.jcreate_com) jcreate_com,
+		       jt.jcreate_time,
+		       jt.jcreate_person,
+		       jt.jupdatepersow,
+		       jt.jupdatetime,
+		       jt.jdescription,
+		       jt.jcapacity,
+		       jt.jrecruitment_type,
+		       (select vt.lpv_meaning
+		          from wx_look_up_values_t vt
+		         where vt.lpv_code = jt.jeducation) jeducation,
+		       jt.jprofessional,
+		       jt.jpriority,
+		       jrt.guid
+		        from WX_JOB_T jt, wx_job_recruitment_rt jrt
+		    where jt.JSTATUS = 'used'
+		   and jrt.status = 'used'
+		   and jrt.jguid = jt.jguid
+		     and jrt.reguid = #{rguid}
+		<if test=" companyCode !=null and companyCode !='' ">
+			and jt.jcreate_com=#{companyCode}
+		</if>
+		<if test=" typeCode !=null and typeCode!='' ">
+			and jt.jtype=#{typeCode}
+		</if>
+		<if test="education !=null and education!='' ">
+			and jt.jeducation=#{education}
+		</if>
+		) j where 1=1
+		<if test="keyWord !=null and keyWord !='' ">
+			and  j.jprofessional like
+			'%'||#{keyWord}||'%'
+		</if>
+      order by
+    j.jpriority
+	</select>
+	<!-- 通过job的guid查 职位详情 -->
+	<resultMap type="Job" id="resultJob">
+		<result column="JGUID" property="JGUID" />
+		<result column="JNAME" property="JNAME" />
+		<result column="JTYPE" property="JTYPE" />
+		<result column="JPLACE" property="JPLACE" />
+		<result column="JPAYMENT" property="JPAYMENT" />
+		<result column="JSTATUS" property="JSTATUS" />
+		<result column="JCREATE_COM" property="JCREATE_COM" />
+		<result column="JCREATE_TIME" property="JCREATE_TIME" />
+		<result column="JCREATE_PERSON" property="JCREATE_PERSON" />
+		<result column="JUPDATEPERSOW" property="JUPDATEPERSOW" />
+		<result column="JUPDATETIME" property="JUPDATETIME" />
+		<result property="JDESCRIPTION" column="JDESCRIPTION" jdbcType="CLOB"
+			javaType="java.lang.String" typeHandler="com.cisdijob.service.common.OracleClobTypeHandler" />
+		<result property="JCAPACITY" column="JCAPACITY" jdbcType="CLOB"
+			javaType="java.lang.String" typeHandler="com.cisdijob.service.common.OracleClobTypeHandler" />
+		<result column="JRECRUITMENT_TYPE" property="JRECRUITMENT_TYPE" />
+		<result column="JPROFESSIONAL" property="JPROJECT" />
+		<result column="JEDUCATION" property="JEDUCATION" />
+		<result column="GUID" property="jrguid" />
+	</resultMap>
+	
+	<select id="getJobById" parameterType="String" resultMap="resultJob">
+		select jt.jguid,
+		       jt.jname,
+		       (select
+    vt.lpv_meaning
+    from wx_look_up_values_t vt,wx_look_up_types_t lp
+    where  vt.lpv_code = jt.jtype and vt.lpv_ltguid =lp.lpt_guid and lp.lpt_type ='JOB_TYPE') jtype,
+		       (select vt.lpv_meaning
+	from wx_look_up_values_t vt ,wx_look_up_types_t lp
+	where
+	vt.lpv_code = jt.jplace and vt.lpv_ltguid =lp.lpt_guid and lp.lpt_type
+	='WORK_PALCE') jplace,
+		       jt.jpayment,
+		       jt.jstatus,
+		       (select ot.ou_name from wx_org_t ot where ot.ou_id = jt.jcreate_com) jcreate_com,
+		       jt.jcreate_time,
+		       jt.jcreate_person,
+		       jt.jupdatepersow,
+		       jt.jupdatetime,
+		       jt.jdescription,
+		       jt.jcapacity,
+		       jt.jrecruitment_type,
+		       (select vt.lpv_meaning
+		          from wx_look_up_values_t vt
+		         where vt.lpv_code = jt.jeducation) jeducation,
+		       jt.jpriority,
+		       jt.jprofessional,
+		       '' as jrguid
+		  from WX_JOB_T jt
+		 where 
+		   jt.jguid=#{id}
+		 order by jt.jpriority
+	</select>
+
+	<select id="getJobCountByMap" parameterType="Map" resultType="Integer">
+		select
+		count(1) from WX_JOB_T jt where 1=1
+		<if test="company!=null and company !=''">
+			and jt.jcreate_com=#{company}
+		</if>
+		<if test="status!=null and status !='' ">
+			and jt.jstatus=#{status}
+		</if>
+		<if test="jobType!=null and jobType !='' ">
+			and jt.jtype=#{jobType}
+		</if>
+	</select>
+	<insert id="insertJob" parameterType="Map" keyProperty="JGUID">
+		insert into wx_job_t
+			  (jguid,
+			   jname,
+			   jtype,
+			   jplace,
+			   jpayment,
+			   jstatus,
+			   jcreate_com,
+			   jcreate_time,
+			   jcreate_person,
+			   jdescription,
+			   jcapacity,
+			   jrecruitment_type,
+			   jprofessional,
+			   jeducation,
+			   jpriority)
+			values
+			  (#{guid},
+			   #{name},
+			   #{type},
+			   #{place},
+			   '面议',
+			   'used',
+			   #{create_com},
+			   #{create_time},
+			   #{create_person},
+			   #{description},
+			   #{capacity},
+			   #{recruitment_type},
+			   #{professional},
+			   #{education},
+			   #{priority})
+	</insert>
+	<update id="updateJob" parameterType="Map">
+		update wx_job_t jt set
+		jt.jstatus=#{status} where jt.jguid=#{jobGuid}
+	</update>
+	
+	<update id="updateJobByMap" parameterType="Map">
+			
+	update wx_job_t jt set
+	      <if test="name != null and name !=''">
+				jt.jname = #{name},
+			</if>
+			<if test="type != null and type !=''">
+				jt.jtype = #{type},
+			</if>
+		  <if test="place != null and place !=''">
+				jt.jplace = #{place},
+			</if>
+			<if test ="create_com !=null and create_com !=''">
+			jt.jcreate_com =#{create_com},
+			</if>
+			<if test ="description !=null and description !=''">
+			jt.jdescription= #{description},
+			</if>
+			<if test="capacity != null and capacity !=''">
+			jt.jcapacity=#{capacity},
+			</if>
+			<if test="professional !=null and professional !=''">
+			jt.jprofessional=#{professional},
+			</if>
+			<if test="education !=null and education !=''">
+			jt.jeducation=#{education},
+			</if>
+			<if test="priority !=null and priority !=''">
+			jt.jpriority=#{priority},
+			</if>
+			<if test="updatePerson !=null and updatePerson !=''">
+			jt.JUPDATEPERSOW =#{updatePerson},
+		</if>
+		jt.JUPDATETIME=SYSDATE where jt.jguid=#{jobGuid}
+	</update>
+	<select id="getJobCompanyCount"  resultType="Integer">
+	select
+     count(distinct jt.jcreate_com)  from WX_JOB_T jt where jt.jstatus ='used'
+</select>
+
+<select id="getCampusJobById" parameterType="String" resultMap="resultJob">
+	select jt.jguid,
+		       jt.jname,
+		       (select
+    vt.lpv_meaning
+    from wx_look_up_values_t vt,wx_look_up_types_t lp
+    where  vt.lpv_code = jt.jtype and vt.lpv_ltguid =lp.lpt_guid and lp.lpt_type ='JOB_TYPE') jtype,
+		       (select vt.lpv_meaning
+    from wx_look_up_values_t vt ,wx_look_up_types_t lp
+    where
+    vt.lpv_code = jt.jplace and vt.lpv_ltguid =lp.lpt_guid and lp.lpt_type ='WORK_PALCE') jplace,
+		       jt.jpayment,
+		       jt.jstatus,
+		       (select ot.ou_name from wx_org_t ot where ot.ou_id = jt.jcreate_com) jcreate_com,
+		       jt.jcreate_time,
+		       jt.jcreate_person,
+		       jt.jupdatepersow,
+		       jt.jupdatetime,
+		       jt.jdescription,
+		       jt.jcapacity,
+		       jt.jrecruitment_type,
+		       jt.jprofessional,
+		       (select vt.lpv_meaning
+		          from wx_look_up_values_t vt
+		         where vt.lpv_code = jt.jeducation) jeducation,
+		       jrt.guid
+		  from WX_JOB_T jt, wx_job_recruitment_rt jrt
+		 where jrt.jguid = jt.jguid
+		   and jrt.guid = #{id}
+</select>
+</mapper>

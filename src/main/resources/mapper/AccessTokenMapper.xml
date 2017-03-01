@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cisdijob.dao.AccessTokenDAO">
+
+	<insert id="insertAccessToken" parameterType="AccessToken"
+		keyProperty="id">
+		insert into WX_ACCESSTOKEN_CONFIG(APPID,ACCESSTOKEN,EXPIRESIN,CREATETIME)
+		VALUES(#{appId},#{token},#{expiresIn},#{createTime})
+	</insert>
+
+
+	<update id="updateAccessToken" parameterType="AccessToken">
+		update
+		WX_ACCESSTOKEN_CONFIG set
+		ACCESSTOKEN=#{token},CREATETIME=#{createTime} where APPID=#{appId}
+	</update>
+
+	<select id="getAccessToken" parameterType="String" resultType="AccessToken">
+		select t.appid,t.accesstoken as token,t.expiresin,t.createtime from WX_ACCESSTOKEN_CONFIG t where t.APPID = #{appId}
+	</select>
+
+</mapper>

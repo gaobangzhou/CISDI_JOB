@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cisdijob.dao.MyApplyDAO">
+
+	<insert id="insertMyApply" parameterType="MyApply" keyProperty="Myguid">
+		insert into WX_MY_APPLY_T (Myguid,Jobguid,Openid,Status,Type,Createtime,Updatetime,jrguid)
+    	values (sys_guid(),#{jobguid},#{openid},'used',#{type}, sysdate,sysdate,#{jrGuid})
+	</insert>
+	<resultMap type="MyApply" id="resultListMyApply">
+		<result column="JGUID" property="JGUID" />
+		<result column="JNAME" property="JNAME" />
+		<result column="JTYPE" property="JTYPE" />
+		<result column="JPLACE" property="JPLACE" />
+		<result column="JPAYMENT" property="JPAYMENT" />
+		<result column="JSTATUS" property="JSTATUS" />
+		<result column="JCREATE_COM" property="JCREATE_COM" />
+		<result column="JCREATE_TIME" property="JCREATE_TIME" />
+		<!-- 下面是WX_MY_APPLY_T表对应字段 -->
+		<result column="MYGUID" property="MYGUID" />
+		<result column="JOBGUID" property="jobguid" />
+		<result column="OPENID" property="openid" />
+		<result column="STATUS" property="status" />
+		<result column="TYPE" property="type" />
+		<result column="CREATETIME" property="createtime" />
+	</resultMap>
+	<select id="selectMyApplyByOpenId" parameterType="String" resultMap="resultListMyApply">
+		select
+			jt.jguid,jt.jname,(select
+    vt.lpv_meaning
+    from wx_look_up_values_t vt,wx_look_up_types_t lp
+    where  vt.lpv_code = jt.jtype and vt.lpv_ltguid =lp.lpt_guid and lp.lpt_type ='JOB_TYPE') jtype,(select vt.lpv_meaning
+    from wx_look_up_values_t vt ,wx_look_up_types_t lp
+    where
+    vt.lpv_code = jt.jplace and vt.lpv_ltguid =lp.lpt_guid and lp.lpt_type ='WORK_PALCE') jplace,jt.jpayment,jt.jstatus,
+			(select ot.ou_name from wx_org_t ot where ot.ou_id=jt.jcreate_com) jcreate_com,jt.jcreate_time,mt.myguid,mt.jobguid,mt.openid,mt.status,mt.type,mt.createtime from  wx_job_t jt ,wx_my_apply_t mt where 
+		jt.jguid=mt.jobguid and mt.openid=#{openId} and mt.status !='unused'
+	
+	</select>
+	<update id="updateMyApply" parameterType="MyApply">
+		update wx_my_apply_t ma set ma.type=#{type} where			
+		ma.myguid=#{MYGUID}	
+	</update>
+	
+	<update id="deleteApplyByGuid" parameterType="String">
+		update wx_my_apply_t ma set ma.status='unused' where ma.myguid=#{MYGUID}
+	</update>
+	
+		<update id="updateApply" parameterType="Map">
+		update wx_my_apply_t ma set ma.status=#{applyStatus} where			
+		ma.myguid=#{applyGuid}	
+	</update>
+</mapper>

@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cisdijob.dao.RecruitmentDAO">
+	<resultMap type="Recruitment" id="resultListRecruitment">	
+		<result column="RECGUID" property="RECGUID" />
+		<result column="RECNAME" property="RECNAME" />
+		<result column="RECSTATUS" property="RECSTATUS" />
+		<result column="RECSTARTTIME" property="RECSTARTTIME" />
+		<result column="RECENDTIME" property="RECENDTIME" />
+		<result column="REPLACE" property="REPLACE" />
+		<result column="CREATEPERSON" property="CREATEPERSON" />
+		<result column="CREATETIME" property="CREATETIME" />
+		<result column="UPDATEPERSON" property="UPDATEPERSON" />
+		<result column="UPDATETIME" property="UPDATETIME" />
+		<result column="RECIMAGE" property="RECIMAGE" />
+	</resultMap>
+
+	<!-- 返回list 的select 语句，注意 resultMap 的值是指向前面定义好的 -->
+	<select id="selectRecruitments"  resultMap="resultListRecruitment">
+		select * from WX_RECRUITMENT_T where RECSTATUS='used'
+	</select>
+	<insert id="insertJobAndRecruit" parameterType="Map" keyProperty="JGUID">
+	insert into wx_job_recruitment_rt
+     (guid, reguid, jguid, status, createtime, createperson) values
+    (sys_guid(), #{recGuid}, #{jobGuid}, 'used', sysdate, #{createPerson})
+	</insert>
+	<select id="getRecruitByJobguid" parameterType="String"  resultType="Map">
+		select t.reguid, rt.recname
+  from WX_JOB_RECRUITMENT_RT t, wx_recruitment_t rt
+ where rt.recguid = t.reguid
+   and t.jguid = #{guid}
+	</select>
+</mapper>

@@ -1,0 +1,48 @@
+<li><span>每页</span></li>
+<li><select id="pagePerNumber" value="${pagination.number}"
+	onchange="pageTurn(this.value,1)">
+		#if(${pagination.number}==10)
+		<option value="10" selected="selected">10</option>
+		<option value="20">20</option>
+		<option value="50">50</option> #elseif(${pagination.number}==20)
+		<option value="10">10</option>
+		<option value="20" selected="selected">20</option>
+		<option value="50">50</option> #else if(${pagination.number}==50)
+		<option value="10">10</option>
+		<option value="20">20</option>
+		<option value="50" selected="selected">50</option> #end
+</select></li>
+<li><span>项</span></li>
+<li><span>共&nbsp;${pagination.pages} &nbsp;页</span></li>
+
+#if(${pagination.pageNum} == 1)
+<li class="disabled"><a href="" onclick="return false;"><<</a></li>
+<li class="disabled"><a href="" onclick="return false;"><</a></li>
+#else
+<li><a href="#" onclick="pageTurn(${pagination.number},1)"><<</a></li>
+<li><a href="#"
+	onclick="pageTurn(${pagination.number},${pagination.preNum})"><</a></li>
+#end #foreach($num in ${pagination.indexList})
+#if($pagination.pageNum==$num)
+<li id="active" class="active"><a href="" onclick="return false;">$num</a></li>
+#else
+<li><a href="javascript:void(0);"
+	onclick="pageTurn(${pagination.number},$num)">$num</a></li>
+#end #end #if(${pagination.pageNum} ==
+${pagination.pages}||${pagination.pages}==0)
+<li class="disabled"><a href="#" onclick="return false;">></a></li>
+<li class="disabled"><a href="#" onclick="return false;">>></a></li>
+#else
+<li><a href="#"
+	onclick="pageTurn(${pagination.number},${pagination.nextNum})">></a></li>
+<li><a href="#"
+	onclick="pageTurn(${pagination.number},${pagination.pages})">>></a></li>
+#end
+
+<li><span>跳转到：</span></li>
+<li><span class="custom"> <input id="pagetext" type="text"
+		size="3"
+		style="height: 18px; width: 40px; line-height: 15px; margin: -2px 0 0 0; padding: 1px; font-size: 12px; text-align: center;">
+</span></li>
+<li><a id="goToPage" href="javascript:void(0);"
+	onclick="pageTurn(${pagination.number},parseInt($('#pagetext').val()))">GO</a></li>

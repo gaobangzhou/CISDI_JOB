@@ -1,0 +1,22 @@
+		#foreach($job in $JOBLIST)
+		 #if($!recType=='campus')
+			<div class="col-xs-12 "
+				style="background-color: white; border-left: solid 5px sandybrown; margin-top: 5px;margin-bottom:5px" onclick="detailInfo(this,'$!{job.getJrguid()}','$!recType');">
+			#else
+			<div class="col-xs-12 "
+				style="background-color: white; border-left: solid 5px sandybrown; margin-top: 5px;margin-bottom:5px" onclick="detailInfo(this,'$!{job.getJGUID()}','$!recType');">
+			#end
+			<h3>$!{job.getJNAME()}</h3>
+				<div class="row">
+					<span class="glyphicon glyphicon-map-marker"></span> <label>$!{job.getJPLACE()}</label>
+					<span class="glyphicon glyphicon-heart col-xs-offset-1"></span> <label>$!{job.getJCREATE_COM()}</label>
+
+				</div>
+				<div class="row ">
+					<i class="fa fa-graduation-cap" style="font-size: 10pt;"></i> <label>$!{job.getJEDUCATION()}及以上</label><span
+						class="glyphicon glyphicon-hand-right col-xs-offset-1"></span><label>$!{job.getJTYPE()}</label>
+					<span class="glyphicon glyphicon-time col-xs-offset-2"></span> <label>$!{job.getJCREATE_TIME()}</label>
+				</div>
+			</div>
+			</tbody>
+		#end

@@ -1,0 +1,330 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cisdijob.dao.ResumeDAO">
+
+	<insert id="insertResume" parameterType="Resume" keyProperty="RGUID">
+		insert
+		into
+		WX_RESUME_T(RGUID,ROPENID,RNAME,RNATIVE_PLACE,RPHONE_NUM,REMAIL,RGENDER,ROTHERS,RENGLISH_SCORE,REDUCATION,RBACHELOR_SCHOOL,RBACHELOR_SUBJECT,RENGLISH_LVL,RSCORE,
+		RMASTER_SCHOOL,RMASTER_SUBJECT,RDOCTOR_SCHOOL,RDOCTOR_SUBJECT,RCREATETIME)
+		values
+		(sys_guid(),#{rOpenId},#{rName},#{rNativePlace},#{rPhoneNum},#{rEmail},#{rGender},#{rOthers},#{rEnglishScore},#{rEducation},#{rBachelorSchool},#{rBachelorSubject},#{rEnglishLVL},#{rScore},
+		#{rMasterSchool},#{rMasterSubject},#{rDoctorSchool},#{rDoctorSubject},SYSDATE)
+	</insert>
+
+	<select id="getResumeByOpenId" parameterType="String"
+		resultType="Resume">
+		select t.ropenid,
+		t.rname,
+		t.rgender,
+		t.rnative_place as
+		rnativeplace,
+		t.remail,
+		t.renglish_lvl as renglishlvl,
+		t.reducation,
+		t.rbachelor_school as rbachelorschool,
+		t.rbachelor_subject as
+		rbachelorsubject,
+		t.rmaster_school as rmasterschool,
+		t.rmaster_subject
+		as rmastersubject,
+		t.rdoctor_school as rdoctorschool,
+		t.rdoctor_subject
+		as rdoctorsubject,
+		t.rothers ,
+		t.renglish_score as renglishscore,
+		t.rscore,
+		t.rphone_num as rphonenum
+		from WX_RESUME_T t where t.ropenid
+		=#{openId}
+	</select>
+
+	<update id="updateResume" parameterType="Resume">
+		update WX_RESUME_T t
+		set
+		t.rname = #{rName},
+		t.rgender = #{rGender},
+		t.rnative_place =
+		#{rNativePlace},
+		t.remail = #{rEmail},
+		t.renglish_lvl = #{rEnglishLVL},
+		t.renglish_score = #{rEnglishScore},
+		t.reducation = #{rEducation},
+		t.rbachelor_school = #{rBachelorSchool},
+		t.rbachelor_subject =
+		#{rBachelorSubject},
+		t.rmaster_school = #{rMasterSchool},
+		t.rmaster_subject = #{rMasterSubject},
+		t.rdoctor_school =
+		#{rDoctorSchool},
+		t.rdoctor_subject = #{rDoctorSubject},
+		t.rothers =
+		#{rOthers},
+		t.rphone_num = #{rPhoneNum},
+		t.rscore = #{rScore},
+		t.rupdatetime = sysdate
+		where
+		t.ropenid = #{rOpenId}
+	</update>
+
+	<resultMap type="ResumeInfo" id="resultListResumeInfo">
+		<result column="MYGUID" property="rApplyGuid" />
+		<result column="ROPENID" property="rOpenId" />
+		<result column="JNAME" property="jobName" />
+		<result column="RNAME" property="rName" />
+		<result column="STATUS" property="status" />
+		<result column="JCREATE_COM" property="createCom" />
+		<result column="RENGLISH_LVL" property="rEnglishLVL" />
+		<result column="REDUCATION" property="rEducation" />
+		<result column="EDSCHOOL" property="edSchool" />
+		<result column="EDSUBJECT" property="edSubject" />
+		<result column="TYPE" property="choiceType" />
+		<result column="RECNAME" property="rRecruitment" />
+	</resultMap>
+
+	<select id="getResumeInfoByMap" parameterType="Map"
+		resultMap="resultListResumeInfo">
+		select * from (select t.*, rec.recname
+		from (select rownum as rn,
+		rt.ropenid,
+		mt.myguid,
+		mt.type,
+		(select ot.ou_name
+		from wx_org_t ot
+		where ot.ou_id = jt.jcreate_com) as jcreate_com,
+		mt.status,
+		jt.jname,
+		rt.rname,
+		rt.renglish_lvl,
+		rt.reducation,
+		decode(rt.reducation,
+		'bachelor',
+		rt.rbachelor_school,
+		'master',
+		rt.rmaster_school,
+		'doctor',
+		rt.rdoctor_school) as edschool,
+		decode(rt.reducation,
+		'bachelor',
+		rt.rbachelor_subject,
+		'master',
+		rt.rmaster_subject,
+		'doctor',
+		rt.rdoctor_subject) as edsubject,
+		mt.jrguid
+		from WX_MY_APPLY_T mt, wx_job_t jt, wx_resume_t rt
+		where mt.jobguid = jt.jguid
+		and mt.openid = rt.ropenid
+		<if test="company !=null and company !=''">
+			and jt.jcreate_com = #{company}
+		</if>
+		<if test="status !=null and status!=''">
+			and mt.status = #{status}
+		</if>
+		<if test="choiceType !=null and choiceType!=''">
+			and mt.type = #{choiceType}
+		</if>
+		) t
+		left join (select ret.recname, jr.guid
+		from wx_job_recruitment_rt jr, wx_recruitment_t ret
+		where jr.reguid = ret.recguid
+		and jr.status = 'used') rec
+		on rec.guid = t.jrguid
+
+		) r where 1=1
+		<if test="recruitment !=null and recruitment !=''">
+			and r.recname = #{recruitment}
+		</if>
+		<if test=" recruitment =='society'">
+			and r.recname is null
+		</if>
+		<if test="startNumber !=null">
+			and r.rn >= #{startNumber}
+		</if>
+		<if test="perNumber !=null">
+			and rownum &lt;= #{perNumber}
+		</if>
+
+	</select>
+	<select id="getApplyCount" parameterType="Map" resultType="Integer">
+		select count(1) from (select * from (select mt.jrguid
+		from WX_MY_APPLY_T mt, wx_job_t jt, wx_resume_t rt
+		where mt.jobguid = jt.jguid
+		and mt.openid = rt.ropenid
+			<if test="company !=null and company !=''">
+			and jt.jcreate_com = #{company}
+		</if>
+		<if test="status !=null and status!=''">
+			and mt.status = #{status}
+		</if>
+		<if test="choiceType !=null and choiceType!=''">
+			and mt.type = #{choiceType}
+		</if>
+		
+		) t
+		left join (select jr.guid,ret.recname
+		from wx_job_recruitment_rt jr, wx_recruitment_t ret
+		where jr.reguid = ret.recguid
+		and jr.status = 'used') rec
+		on rec.guid = t.jrguid
+	) r  where 1=1
+		<if test="recruitment !=null and recruitment !=''">
+			and r.recname = #{recruitment}
+		</if>
+		<if test=" recruitment =='society'">
+			and r.recname is null
+		</if>
+	</select>
+
+
+	<resultMap type="ResumeRow" id="resultListResumeRow">
+		<result column="rname" property="name" />
+		<result column="rgender" property="gender" />
+		<result column="rnative_place" property="nativePlace" />
+		<result column="rphone_num" property="phoneNum" />
+		<result column="remail" property="email" />
+		<result column="renglish_lvl" property="englishLVL" />
+		<result column="renglish_score" property="englishScore" />
+		<result column="reducation" property="education" />
+		<result column="rbachelor_school" property="bachelorSchool" />
+		<result column="rbachelor_subject" property="bachelorSubject" />
+		<result column="rmaster_school" property="masterSchool" />
+		<result column="rmaster_subject" property="masterSubject" />
+		<result column="rdoctor_school" property="doctorSchool" />
+		<result column="rdoctor_subject" property="doctorSubject" />
+		<result column="rscore" property="score" />
+		<result column="firstchoice" property="firstChoice" />
+		<result column="rrecruitment1" property="rrecruitment1" />
+		<result column="secondchoice" property="secondChoice" />
+		<result column="rrecruitment2" property="rrecruitment2" />
+		<result column="rothers" property="others" />
+	</resultMap>
+
+	<select id="getAllResume" resultMap="resultListResumeRow">
+		  select rt.rname,
+    rt.rgender,
+    rt.rnative_place,
+    rt.rphone_num,
+    rt.remail,
+    rt.renglish_lvl,
+    rt.renglish_score,
+    rt.reducation,
+    rt.rbachelor_school,
+    rt.rbachelor_subject,
+    rt.rmaster_school,
+    rt.rmaster_subject,
+    rt.rdoctor_school,
+    rt.rdoctor_subject,
+    (select LV.LPV_MEANING
+    FROM WX_LOOK_UP_VALUES_T LV
+    WHERE LV.LPV_CODE = rt.rscore
+    AND LV.LPV_LTGUID = '1F7196E161B6C0DEE050007F01001BAE') AS rscore,
+    NVL((SELECT JT.JNAME
+    FROM WX_JOB_T JT, WX_MY_APPLY_T MY
+    WHERE JT.JGUID = MY.JOBGUID
+    AND MY.TYPE = 'FC'
+    AND MY.STATUS != 'unused'
+    AND MY.OPENID = RT.ROPENID),
+    '') AS firstchoice,
+    nvl((select rt.recname from wx_job_recruitment_rt jrt,wx_recruitment_t rt,WX_MY_APPLY_T MY where rt.recguid = jrt.reguid and my.jrguid =jrt.guid  AND MY.TYPE = 'FC'
+    AND MY.STATUS != 'unused'
+    AND MY.OPENID = RT.ROPENID),'') as rrecruitment1,
+    NVL((SELECT JT.JNAME
+    FROM WX_JOB_T JT, WX_MY_APPLY_T MY
+    WHERE JT.JGUID = MY.JOBGUID
+    AND MY.TYPE = 'SC'
+    AND MY.STATUS != 'unused'
+    AND MY.OPENID = RT.ROPENID),
+    '') AS secondchoice,
+    nvl((select rt.recname from wx_job_recruitment_rt jrt,wx_recruitment_t rt,WX_MY_APPLY_T MY where rt.recguid = jrt.reguid and my.jrguid =jrt.guid  AND MY.TYPE = 'SC'
+    AND MY.STATUS != 'unused'
+    AND MY.OPENID = RT.ROPENID),'') as rrecruitment2,
+    rt.rothers
+    from wx_resume_t rt
+	</select>
+		<resultMap type="ResumeResult" id="resultListResumeResult">
+		<result column="rname" property="name" />
+		<result column="rgender" property="gender" />
+		<result column="rnative_place" property="nativePlace" />
+		<result column="rphone_num" property="phoneNum" />
+		<result column="remail" property="email" />
+		<result column="renglish_lvl" property="englishLVL" />
+		<result column="renglish_score" property="englishScore" />
+		<result column="reducation" property="education" />
+		<result column="rbachelor_school" property="bachelorSchool" />
+		<result column="rbachelor_subject" property="bachelorSubject" />
+		<result column="rmaster_school" property="masterSchool" />
+		<result column="rmaster_subject" property="masterSubject" />
+		<result column="rdoctor_school" property="doctorSchool" />
+		<result column="rdoctor_subject" property="doctorSubject" />
+		<result column="rscore" property="score" />
+		<result column="choicetype" property="choiceType" />
+		<result column="createcom" property="createCom" />
+		<result column="jobname" property="jobName" />
+		<result column="recruitment" property="recruitment" />
+		<result column="rothers" property="others" />
+	</resultMap>
+	
+	<select id="getResumeResultByMap" parameterType="Map"
+		resultMap="resultListResumeResult">
+		select * from (select t.*, rec.recname as recruitment
+    from (select
+    rt.ropenid,
+    mt.myguid,
+    decode(mt.type,'FC','第一志愿','SC','第二志愿') as choicetype,
+    (select ot.ou_name
+    from wx_org_t ot
+    where ot.ou_id = jt.jcreate_com) as createcom,
+     decode(mt.status,'used','待处理','adopt','已接受','reject','已拒绝','unused','已作废') as status,
+    jt.jname as jobname,
+   	rt.rname,
+    rt.rgender,
+    rt.rnative_place,
+    rt.rphone_num,
+    rt.remail,
+    rt.renglish_lvl,
+    rt.renglish_score,
+    rt.reducation,
+    rt.rbachelor_school,
+    rt.rbachelor_subject,
+    rt.rmaster_school,
+    rt.rmaster_subject,
+    rt.rdoctor_school,
+    rt.rdoctor_subject,
+    rt.rothers,
+    (select LV.LPV_MEANING
+    FROM WX_LOOK_UP_VALUES_T LV
+    WHERE LV.LPV_CODE = rt.rscore
+    AND LV.LPV_LTGUID = '1F7196E161B6C0DEE050007F01001BAE') AS rscore,   
+    mt.jrguid
+    from WX_MY_APPLY_T mt, wx_job_t jt, wx_resume_t rt
+    where mt.jobguid = jt.jguid
+    and mt.openid = rt.ropenid
+		<if test="company !=null and company !=''">
+			and jt.jcreate_com = #{company}
+		</if>
+		<if test="status !=null and status!=''">
+			and mt.status = #{status}
+		</if>
+		<if test="choiceType !=null and choiceType!=''">
+			and mt.type = #{choiceType}
+		</if>
+		) t
+		left join (select ret.recname, jr.guid
+		from wx_job_recruitment_rt jr, wx_recruitment_t ret
+		where jr.reguid = ret.recguid
+		and jr.status = 'used') rec
+		on rec.guid = t.jrguid
+
+		) r where 1=1
+		<if test="recruitment !=null and recruitment !=''">
+			and r.recruitment = #{recruitment}
+		</if>
+		</select>
+	
+	<select id="getResumeCount" parameterType="Map" resultType="Integer">
+	select count(1) from WX_RESUME_T t
+	</select>
+</mapper>

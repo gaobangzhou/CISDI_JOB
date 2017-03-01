@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cisdijob.dao.AdminUserDAO">
+
+	<insert id="insertAdminUser" parameterType="AdminUser" keyProperty="guid">
+		insert
+		into WX_USER_T(guid,
+		username,usercode,createtime,createperson,usertype)
+		values
+		(sys_guid(),#{userName},
+		#{userCode},
+		sysdate,
+		#{createPerson},#{userType})
+	</insert>
+
+
+	<select id="getAdminUserById" parameterType="String" resultType="AdminUser">
+		select * from WX_USER_T t where t.usercode = #{id}
+	</select>
+
+	<resultMap type="AdminUser" id="resultListUser">
+		
+		<result column="name" property="userName" />
+		<result column="password" property="userCode" />
+		<result column="createtime" property="createTime" />
+		<result column="updatetime" property="updateTime" />
+		<result column="usertype" property="userType" />
+	</resultMap>
+
+	<!-- 返回list 的select 语句，注意 resultMap 的值是指向前面定义好的 -->
+	<select id="selectAdminUser" parameterType="string" resultMap="resultListUser">
+		select * from WX_USER_T t where t.usercode= #{id}
+	</select>
+
+  <select id="getAllAdminUser"  resultMap="resultListUser">
+		select username,usercode,to_char(createtime,'YYYY/MM/DD'),createperson from WX_USER_T t 
+	</select>
+	
+	<delete id="deleteAdminUser" parameterType="AdminUser">
+	DELETE FROM WX_USER_T WHERE USERCODE = #{userCode} 
+	</delete>
+
+
+
+</mapper>

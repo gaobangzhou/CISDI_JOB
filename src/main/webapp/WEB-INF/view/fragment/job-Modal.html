@@ -1,0 +1,147 @@
+
+<div class="modal-header" data-target="#modal-job-contents">
+	<div class="table-header" align="center">
+		<button type="button" class="close" data-dismiss="modal"
+			aria-hidden="true">
+			<span class="white">&times;</span>
+		</button>
+		职位详情
+	</div>
+</div>
+
+<div class="modal-body step-content" id="modal-job-contents">
+	<div class="step-pane active">
+		<div class="center">
+			<form action="" class="form-horizontal">
+				<div class="form-group">
+					<div class="col-xs-6 form-cell-edit">
+						<input type="text" id="nameEdit" name="name" placeholder="职位名称"
+							readonly="readonly" class="form-control"
+							value="$!{JobInfo.getJNAME()}">
+					</div>
+					<div class="col-xs-6 form-cell-edit">
+						<select id="create_comEdit" name="create_com" disabled="disabled" value="$!{JobInfo.getJCREATE_COM()}"
+							class=" form-control">
+							<option class="" value="">选择公司</option> #foreach($company in
+							$CompanyList)
+							#if(${company.getName()}==$!{JobInfo.getJCREATE_COM()})
+							<option value="${company.getOuId()}" selected="selected">${company.getName()}</option>
+							#else
+							<option value="${company.getOuId()}">${company.getName()}</option>
+							#end
+							#end
+						</select>
+					</div>
+				</div>
+
+				<div class="form-group">
+					<div class="col-xs-6 form-cell-edit">
+						<select id="typeEdit" name="type" disabled="disabled"
+							class=" form-control">
+							<option class="" value="$!{JobInfo.getJTYPE()}">选择类别</option> <#foreach($jobType in
+							$JobTypeList) #if(${jobType.getValue()}==${JobInfo.getJTYPE()})
+							<option selected="selected" value="${jobType.getCode()}">${jobType.getValue()}</option>
+							#else
+							<option value="${jobType.getCode()}">${jobType.getValue()}</option>
+							#end #end
+						</select>
+					</div>
+				<div class="col-xs-6 form-cell-edit">
+								<select id="priorityEdit" name="priority" disabled="disabled" value="$!{JobInfo.getJPRIORITY()}"
+									class=" form-control">
+									<option class="" value="">选择优先级</option>
+									#if($!{JobInfo.getJPRIORITY()}=="1")
+									<option selected="selected" value="1">高优先级</option>
+									<option value="2">中优先级</option>
+									<option class="" value="3">低优先级</option>
+									#elseif($!{JobInfo.getJPRIORITY()}=="2")
+									<option value="1">高优先级</option>
+									<option selected="selected" value="2">中优先级</option>
+									<option value="3">低优先级</option>
+									#else
+									<option value="1">高优先级</option>
+									<option value="2">中优先级</option>
+									<option selected="selected" value="3">低优先级</option> #end
+								</select>
+							</div>
+						</div>
+				<div class="form-group">
+					<div class="col-xs-6 form-cell-edit">
+						<select id="placeEdit" name="place" disabled="disabled"
+							class=" form-control">
+							<option class="" value="${JobInfo.getJPLACE()}">工作地点</option> #foreach($workpalce in
+							$WorkPlaceList)
+
+							#if(${workpalce.getValue()}==${JobInfo.getJPLACE()})
+							<option selected="selected" value="${workpalce.getCode()}">${workpalce.getValue()}</option>
+							#else
+							<option value="${workpalce.getCode()}">${workpalce.getValue()}</option>
+							#end #end
+						</select>
+					</div>
+					<div class="col-xs-6 form-cell-edit">
+						<select id="educationEdit" name="education" disabled="disabled"
+							class=" form-control">
+							<option class="" value="$!{JobInfo.getJEDUCATION()}">学历要求</option> #foreach($education in
+							$EducationList)
+
+							#if(${education.getValue()}==$!{JobInfo.getJEDUCATION()})
+							<option class="pull-right" value="${education.getCode()}"
+								selected="selected">${education.getValue()}</option> #else
+							<option class="pull-right" value="${education.getCode()}">${education.getValue()}</option>
+							#end #end
+						</select>
+					</div>
+				</div>
+
+				<div class="form-group">
+					
+					<div class="col-xs-6 form-cell-edit">
+						<select id="recruitment_typeEdit" name="recruitment_type"
+							disabled="disabled" class=" form-control" onchange="check(this)">
+							<option class="" value="">招聘类别</option>
+							#if($!{JobInfo.getJRECRUITMENT_TYPE()}=="campus")
+							<option selected="selected" value="campus">校园招聘</option>
+							<option value="society">社会招聘</option>
+							#elseif($!{JobInfo.getJRECRUITMENT_TYPE()}=="society")
+							<option value="campus">校园招聘</option>
+							<option selected="selected" value="society">社会招聘</option> #end
+						</select>
+					</div>
+				</div>
+					#if($!{JobInfo.getJRECRUITMENT_TYPE()}=="campus")
+				<div id="screenText" class="row">
+					<label id="recruitment-lable" class="col-sm-3 control-label"
+						>选择招聘场次</label>
+					<div class="col-xs-9" id="recruitmentText">
+						<input type="text" name="name" readonly="readonly"
+							class="form-control" value="$!RecruitString">
+					</div>
+				</div>
+				#end
+				<br>
+	                  <div class="row">
+								<textarea rows="4" id="professionalEdit" name="description" readOnly="true"
+									class=" form-control" placeholder="专业要求">$!{JobInfo.getJPROJECT()}</textarea>
+							</div>
+				<br>
+				<div class="row hidden">
+					<textarea rows="4" id="descriptionEdit" name="description" readOnly="true"
+						readOnly="true" class=" form-control" placeholder="工作描述">$!{JobInfo.getJDESCRIPTION()}</textarea>
+				</div>
+				<br>
+				<textarea rows="4" id="capacityEdit" name="capacity" readOnly="true"
+					class=" form-control" placeholder="职位要求">$!{JobInfo.getJCAPACITY()}</textarea>
+			</form>
+
+		</div>
+		<div class="modal-footer wizard-actions" id="modalFooter">
+			<button id="btnedit" class="btn btn-info btn-sm" >
+				<i class="ace-icon fa fa-edit"></i>编辑</button>
+				<button id="btnfinish" class="btn btn-danger btn-sm hidden" onclick="EditSubmit('$!{JobInfo.getJGUID()}');">
+				<i class="ace-icon fa fa-check " ></i>提交</button>
+			<button class="btn btn-success btn-sm " data-dismiss="modal">
+				返回 <i class="ace-icon fa fa-arrow-right icon-on-right"></i>
+			</button>
+		</div>
+	</div>

@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta name="viewport"
+	content="width=device-width, initial-scale=1.0, maximum-scale=1.0" />
+<title>微信招聘平台</title>
+<link rel="stylesheet"
+	href="${request.getContextPath()}/resources/assets/css/bootstrap.min.css">
+<link rel="stylesheet"
+	href="${request.getContextPath()}/resources/assets/css/ace-fonts.css" />
+<link rel="stylesheet"
+	href="${request.getContextPath()}/resources/assets/css/font-awesome.min.css">
+<link rel="stylesheet"
+	href="${request.getContextPath()}/resources/assets/css/ace.min.css"
+	id="main-ace-style" />
+<script type="text/javascript"
+	src="${request.getContextPath()}/resources/assets/js/jquery-1.7.2.js"></script>
+<script
+	src="${request.getContextPath()}/resources/assets/js/bootstrap.min.js"></script>
+<script
+	src="${request.getContextPath()}/resources/assets/js/bootbox.min.js"></script>
+<script
+	src="${request.getContextPath()}/resources/assets/js/ace-elements.min.js"></script>
+<script src="${request.getContextPath()}/resources/assets/js/ace.min.js"></script>
+</head>
+<body style="background-color: #F2F5F5">
+
+	<div class="row navbar-fixed-top text-center"
+		style="font-size: 18px; background-color: #0092EF">
+		<p style="margin-top: 10px;color:white">职位详情</p>
+	</div>
+	<a id="RETURN"
+		class=" navbar-fixed-top fa fa-arrow-left pull-left col-xs-2"
+		style="margin-top: 10px;"></a>
+
+	<div class="space-4"></div>
+	<div class="container">
+	<input id="jrGuid" class="hidden" value="$!{JOB.getJrguid()}">
+		<input id="jobGuid" class="hidden" value="$!{JOB.getJGUID()}">
+		<div class="col-xs-12 "
+			style="background-color: white; margin-top: 50px">	 
+			<h3>$!{JOB.getJNAME()}</h3>
+				<div class="row">
+					<span class="glyphicon glyphicon-map-marker"></span> <label>$!{JOB.getJPLACE()}</label>
+					<span class="glyphicon glyphicon-heart col-xs-offset-1"></span> <label>$!{JOB.getJCREATE_COM()}</label>
+
+				</div>
+				<div class="row ">
+					<i class="fa fa-graduation-cap" style="font-size: 10pt;"></i> <label>$!{JOB.getJEDUCATION()}及以上</label><span
+						class="glyphicon glyphicon-hand-right col-xs-offset-1"></span><label>$!{JOB.getJTYPE()}</label>
+					<span class="glyphicon glyphicon-time col-xs-offset-2"></span> <label>$!{JOB.getJCREATE_TIME()}</label>
+				</div>
+			
+		</div>
+	</div>
+	  <br>
+	<div class="container" >
+		<div class="col-xs-12 " style="background-color: white;">
+			<label class="control-label"><h4>专业要求</h3></label><br>
+			<ol>$!{JOB.getJPROJECT()}
+			</ol>
+		</div>
+	</div>
+   <br>
+	<div class="container" >
+		<div class="col-xs-12 hidden " style="background-color: white;">
+			<label class="control-label"><h4>工作描述</h3></label><br>
+			<ol>$!{JOB.getJDESCRIPTION()}
+			</ol>
+		</div>
+	</div>
+	<br>
+	<div class="container" style="padding-bottom: 60px;">
+		<div class="col-xs-12 " style="background-color: white;">
+			<label class="control-label"><h4>职位要求</h3></label><br>
+			<ol>$!{JOB.getJCAPACITY()}
+			</ol>
+		</div>
+	</div>
+	<div class="navbar  navbar-fixed-bottom ">
+		<button class="btn btn-info navbar-btn col-xs-12 btn-lg"
+			id="bootbox-options">立即申请</button>
+	</div>
+	<script
+	src="${request.getContextPath()}/resources/js/position-detail.js"></script>
+</body>
+</html>

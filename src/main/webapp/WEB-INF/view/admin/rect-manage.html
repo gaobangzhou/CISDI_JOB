@@ -1,0 +1,194 @@
+<div class="breadcrumbs" id="breadcrumbs" style="margin-top: 5px;">
+	<script type="text/javascript">
+		try {
+			ace.settings.check('breadcrumbs', 'fixed')
+		} catch (e) {
+		}
+	</script>
+
+	<ul class="breadcrumb">
+		<li><i class="ace-icon fa fa-home home-icon"></i> <a href="#">场次管理</a>
+		</li>
+
+		<li class="active">场次信息</li>
+	</ul>
+</div>
+<div class="page-header">
+	<div class="container">
+		<h1>
+			场次 <small> <i class="ace-icon fa fa-angle-double-right"></i>
+				宣讲会
+			</small>
+		</h1>
+	</div>
+</div>
+<div class="container">
+	<div class="clearfix">
+		<div class="itemdiv mymemberdiv">
+			<div class="user">
+				<img alt="Jim Doe's avatar"
+					src="${request.getContextPath()}/resources/images/management.png">
+			</div>
+			<div class="body">
+				<div class="name">
+					<span style="font-size: 20px; color: black"> Joe Doe</span> <span
+						style="margin-right: 10px; float: right; margin-top: 5px; font-size: 15px;">
+						开始时间：<span style="color: red;">2015-08-01 9:00</span>
+					</span>
+				</div>
+				<div class="email">
+					邮箱：<span style="font-size: 13px; color: gray">3213@qq.com </span>
+				</div>
+			</div>
+			<div class="body">
+				<div class="time">
+					<button type="button" onclick="editRecruitment('12313')"
+						class="btn-white btn btn-success btn-xs">
+						<i class="ace-icon fa fa-edit "></i>编辑
+					</button>
+					<button type="button" class="btn-white btn btn-danger btn-xs">
+						<i class="ace-icon fa fa-trash-o "></i>删除
+					</button>
+				</div>
+				<div style="padding-top: 5px;">
+					宣讲会地点：<span style="font-size: 13px; color: #232fd2">赛迪大厦 </span>
+
+				</div>
+
+			</div>
+		</div>
+
+		<div class="itemdiv mymemberdiv">
+			<div class="center" style="padding: 27px; color: gray">
+				<a herf="#" class="ace-icon fa fa-plus bigger-300 " onclick="newRecruitment()" style="text-decoration : none"></a>
+
+			</div>
+		</div>
+	</div>
+</div>
+
+<div id="modal-rect" class="modal fade" tabindex="-2">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header no-padding">
+				<div class="table-header">
+					<button type="button" class="close" data-dismiss="modal"
+						aria-hidden="true">
+						<span class="white">&times;</span>
+					</button>
+					宣讲会场次信息
+				</div>
+			</div>
+			<div class="modal-body no-padding">
+				<div class="row">
+					<form id="rectForm" class="form-horizontal"
+						enctype="multipart/form-data"></form>
+				</div>
+			</div>
+			<div class="modal-footer no-margin-top">
+				<div class=" center">
+					<button type="button" id="submitShare"
+						class="btn btn-success btn-next btn-sm">
+						<i class="ace-icon fa fa-check bigger-110"></i> 保存
+					</button>
+				</div>
+			</div>
+			<!-- /.modal-content -->
+		</div>
+		<!-- /.modal-dialog -->
+	</div>
+</div>
+
+<!-- 单个宣讲会模版 -->
+<script id="rectTpl" type="text/x-template">
+  <div class="itemdiv mymemberdiv">
+			<div class="user">
+				<img alt="Jim Doe's avatar"
+					src="/CISDI_JOB/resources/images/{{recimage}}">
+			</div>
+			<div class="body">
+				<div class="name">
+					<span style="font-size: 20px; color: black"> {{recname}}</span> <span
+						style="margin-right: 10px; float: right; margin-top: 5px; font-size: 15px;">
+						开始时间：<span style="color: red;">{{recstarttime}}</span>
+					</span>
+				</div>
+				<div class="email">
+					<span style="font-size: 13px; color: gray">{{recemail}} </span>
+				</div>
+			</div>
+			<div class="body">
+				<div class="time">
+					<button type="button" class="btn-white btn btn-success btn-xs">
+						<i class="ace-icon fa fa-edit "></i>编辑
+					</button>
+					<button type="button" class="btn-white btn btn-danger btn-xs">
+						<i class="ace-icon fa fa-trash-o "></i>删除
+					</button>
+				</div>
+				<div style="padding-top: 5px;">
+					宣讲会地点：<span style="font-size: 13px; color: #232fd2">{{replace}} </span>
+
+				</div>
+
+			</div>
+		</div>
+</script>
+<!-- 添加宣讲会模版 -->
+<script id="rectadd" type="text/x-template">
+ <div class="itemdiv mymemberdiv">
+   <div class="center" style="padding: 27px; color: gray">
+	 <a herf="#" class="ace-icon fa fa-plus bigger-300 " onclick="newRecruitment()" style="text-decoration : none"></a>
+
+   </div>
+  </div>
+</script>
+<!-- 新增或者编辑宣讲会信息模版-->
+<script id="infoTpl" type="text/x-template">
+<div class="form-group">
+	<label id="filelabel" class="col-sm-3 control-label" for="file">场次图片</label>
+	<div class="col-sm-7 no-padding-left" id="filediv">
+		<input type="file" name="file" id="file" value="{{recimage}}" />
+	</div>
+
+</div>
+<div class="form-group">
+	<label class="col-sm-3 control-label" for="recName">名称</label>
+	<div class="col-sm-7 no-padding-left">
+		<input type="text" placeholder="" id="recName" name="recName"
+			value="{{recname}}" class="col-xs-12 col-sm-12" />
+	</div>
+
+</div>
+<div class="form-group">
+	<label class="col-sm-3 control-label" for="recEmail">邮箱</label>
+	<div class="col-sm-7 no-padding-left">
+		<input type="text" placeholder="" id="recEmail" name="recEmail"
+			value="{{recEmail}}" class="col-xs-12 col-sm-12" />
+	</div>
+
+</div>
+<div class="form-group">
+	<label class="col-sm-3 control-label" for="rePlace">地点</label>
+	<div class="col-sm-7 no-padding-left">
+		<input type="text" placeholder="" id="rePlace" name="recPlace"
+			value="{{rePlace}}" class="col-xs-12 col-sm-12" />
+	</div>
+
+</div>
+<div class="form-group">
+	<label class="col-sm-3 control-label" for="recStartTime">开始时间</label>
+	<div class="col-sm-6 no-padding-left">
+		<div class="input-group">
+			<input id="recStartTime" name="recStartTime"
+				class="form-control datepicker" value="{{recstarttime}}" type="text"
+				id="creationDate" readonly /><span class="input-group-addon">
+				<i class="fa fa-times bigger-110" onclick="removeDatetime()"></i>
+			</span><span class="input-group-addon"> <i
+				class="fa fa-calendar bigger-110"></i>
+			</span>
+		</div>
+	</div>
+</div>
+</script>
+<script src="${request.getContextPath()}/resources/js/admin-rect.js"></script>

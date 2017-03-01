@@ -1,0 +1,327 @@
+<div class="breadcrumbs" id="breadcrumbs" style="margin-top: 5px;">
+	<script type="text/javascript">
+		try {
+			ace.settings.check('breadcrumbs', 'fixed')
+		} catch (e) {
+		}
+	</script>
+
+	<ul class="breadcrumb">
+		<li><i class="ace-icon fa fa-home home-icon"></i> <a href="#">首页</a>
+		</li>
+
+		<li class="active">统计信息</li>
+	</ul>
+</div>
+
+	<div class="page-header">
+    <div class="container">  
+	<h1>
+		公司 <small> <i class="ace-icon fa fa-angle-double-right"></i>
+			赛迪集团
+		</small>
+	</h1>
+	</div>
+</div>
+<div class="container">
+	<div class="row">
+		<!-- PAGE CONTENT BEGINS -->
+		<div class="col-sm-7 no-padding-left">
+			<div class="space-6"></div>
+
+			<div class="row ">
+				<!-- #section:pages/dashboard.infobox -->
+
+				<div class="widget-box">
+					<div class="widget-header widget-header-flat widget-header-small">
+						<h5 class="widget-title">
+							<i class="ace-icon fa fa-signal"></i> 总数据统计
+						</h5>
+
+					</div>
+
+					<div class="infobox infobox-orange2">
+						<!-- #section:pages/dashboard.infobox.sparkline -->
+						<div class="infobox-chart">
+							<span class="sparkline"
+								data-values="196,128,202,177,154,94,100,170,224"></span>
+						</div>
+
+						<!-- /section:pages/dashboard.infobox.sparkline -->
+						<div class="infobox-data">
+							<span class="infobox-data-number">${totalMap.totalNum}</span>
+							<div class="infobox-content">总关注数</div>
+						</div>
+						#if(${totalMap.type}=='up')
+						<div class="stat stat-success"> 今天${totalMap.number}</div>
+						#elseif(${totalMap.type}=='draw')
+						<div class="stat"> 今天${totalMap.number}</div>
+						#elseif(${totalMap.type}=='down')
+						<div class="stat stat-important"> 今天${totalMap.number}</div>
+						#end
+					</div>
+
+					<div class="infobox infobox-green">
+						<div class="infobox-icon">
+							<i class="ace-icon fa fa-file"></i>
+						</div>
+
+						<div class="infobox-data">
+							<span class="infobox-data-number">$resumeNumber</span>
+							<div class="infobox-content">总简历数</div>
+						</div>
+
+						<!-- #section:pages/dashboard.infobox.stat -->
+					<!-- 	<div class="stat stat-success">今天8</div> -->
+
+						<!-- /section:pages/dashboard.infobox.stat -->
+					</div>
+
+					<div class="infobox infobox-blue">
+						<div class="infobox-icon">
+							<i class="ace-icon fa fa-star"></i>
+						</div>
+
+						<div class="infobox-data">
+							<span class="infobox-data-number">$applyNumber</span>
+							<div class="infobox-content">总申请数</div>
+						</div>
+
+						<!-- <div class="badge badge-success">
+							+6%<i class="ace-icon fa fa-arrow-up"></i>
+						</div> -->
+						
+					</div>
+
+					<div class="infobox infobox-pink">
+						<div class="infobox-icon">
+							<i class="ace-icon fa fa-group"></i>
+						</div>
+
+						<div class="infobox-data">
+							<span class="infobox-data-number">$!jobNumber</span>
+							<div class="infobox-content">职位总数</div>
+						</div>
+						<!-- <div class="stat stat-important"> 今天4</div> -->
+					</div>
+
+					<div class="infobox infobox-red">
+						<div class="infobox-icon">
+							<i class="ace-icon fa fa-flask"></i>
+						</div>
+
+						<div class="infobox-data">
+							<span class="infobox-data-number">$!appliedJobNum</span>
+							<div class="infobox-content">已申请的职位总数</div>
+						</div>
+					</div>
+
+
+					<div class="infobox infobox-blue2">
+						<div class="infobox-progress">
+							<!-- #section:pages/dashboard.infobox.easypiechart -->
+							<div class="easy-pie-chart percentage" data-percent="$!jobPercent"
+								data-size="46">
+								<span class="percent">$!jobPercent</span>%
+							</div>
+
+							<!-- /section:pages/dashboard.infobox.easypiechart -->
+						</div>
+
+						<div class="infobox-data">
+							<span class="infobox-text">$!jobPercent %</span>
+
+							<div class="infobox-content">
+								<span class="bigger-110"></span> 已申请职位比例
+							</div>
+						</div>
+					</div>
+
+					<div class="space-6"></div>
+
+				</div>
+			</div>
+
+			<!-- /.row -->
+			<br>
+
+			<div class="row">
+
+				<div class="widget-box">
+					<div class="widget-header widget-header-flat widget-header-small">
+						<h5 class="widget-title">
+							<i class="ace-icon fa fa-signal"></i> 简历管理情况
+						</h5>
+
+					</div>
+
+					<div class="widget-body">
+						<div class="widget-main">
+							<!-- #section:plugins/charts.flotchart -->
+							<div id="piechart-placeholder"></div>
+
+							<!-- /section:plugins/charts.flotchart -->
+							<div class="hr hr8 hr-double"></div>
+
+							<div class="clearfix">
+								<!-- #section:custom/extra.grid -->
+								<div class="grid4">
+									<span class="grey"> <i
+										class="ace-icon fa fa-facebook-square fa-2x blue"></i>
+										未处理
+									</span>
+									<h4 id ="usedApply" class="bigger pull-right">$usedApply</h4>
+								</div>
+
+								<div class="grid4">
+									<span class="grey"> <i
+										class="ace-icon fa fa-facebook-square fa-2x"></i>
+										已作废
+									</span>
+									<h4 id ="unusedApply" class="bigger pull-right">$unusedApply</h4>
+									
+								</div>
+
+								<div class="grid4">
+									<span class="grey"> <i
+										class="ace-icon fa fa-twitter-square fa-2x green"></i>
+										已通过
+									</span>
+									<h4 id ="adoptApply" class="bigger pull-right">$adoptApply</h4>
+								</div>
+
+								<div class="grid4">
+									<span class="grey"> <i
+										class="ace-icon fa fa-pinterest-square fa-2x red"></i>
+										已拒绝
+									</span>
+									<h4  id ="rejectApply" class="bigger pull-right">$rejectApply</h4>
+								</div>
+
+							</div>
+						</div>
+						<!-- /.widget-main -->
+					</div>
+					<!-- /.widget-body -->
+				</div>
+			</div>
+		</div>
+		<div class="col-sm-5 no-padding-right">
+			<div class="row">
+				<div class="widget-box transparent">
+					<div class="widget-header widget-header-flat">
+						<h4 class="widget-title lighter">
+							<i class="ace-icon fa fa-star orange"></i> 公司招聘信息
+						</h4>
+
+						<div class="widget-toolbar">
+							<a href="#" data-action="collapse"> <i
+								class="ace-icon fa fa-chevron-up"></i>
+							</a>
+						</div>
+					</div>
+					<div class="widget-body transparent">
+						<div class="widget-header">
+							<h5 class="widget-title bigger red">最火热的职位TOP3</h5>
+						</div>
+
+						<div class="widget-body">
+							<div class="widget-main no-padding">
+								<ul class="list-unstyled list-striped pricing-table-header">
+								#foreach($tojob int $topHotJops)
+									<li>$!{tojob.JN}<span class ="col-xs-6">$!{tojob.JNAME}</span></li>
+									
+								#end
+								</ul>
+							</div>
+						</div>
+					</div>
+
+					<div class="widget-body " >
+						<div class="widget-main no-padding">
+						<div class="widget-header">
+							<h5 class="widget-title bigger green">其他信息</h5>
+						</div>
+							<table class="table table-bordered table-hover">
+								<thead class="thin-border-bottom">
+									<tr>
+										<th><i class="ace-icon fa fa-caret-right blue"></i>信息</th>
+
+										<th><i class="ace-icon fa fa-caret-right blue"></i>数量</th>
+									</tr>
+								</thead>
+
+								<tbody>
+								<tr>
+										<td>招聘公司总数</td>
+
+										<td> <span class="green">$!jobCompanyCount</span></td>
+									</tr>
+									<tr>
+										<td>管理员</td>
+
+										<td> <span class="green">$!adminNum</span></td>
+									</tr>
+									<tr>
+										<td>招聘类别</td>
+
+										<td> <span class="green">$!totalJobType</span></td>
+									</tr>
+									<tr>
+										<td>工作地点</td>
+
+										<td><span class="green">$!totalPlace</span></td>
+									</tr>
+
+									
+
+									<tr>
+										<td>招聘专业</td>
+
+										<td><span class="green">$!totalSubject</span></td>
+									</tr>
+								</tbody>
+							</table>
+						</div>
+						<!-- /.widget-main -->
+					</div>
+					<!-- /.widget-body -->
+				</div>
+				<!-- /.widget-box -->
+			</div>
+			<!-- /.col -->
+		</div>
+		<!-- /.row -->
+
+		<!-- PAGE CONTENT ENDS -->
+	</div>
+</div>
+
+
+<!-- the following scripts are used in demo only for onpage help and you don't need them -->
+<link rel="stylesheet"
+	href="${request.getContextPath()}/resources/assets/css/ace.onpage-help.css" />
+
+<script src="../assets/js/bootstrap.min.js"></script>
+
+<script
+	src="${request.getContextPath()}/resources/assets/js/jquery.easypiechart.min.js"></script>
+<script
+	src="${request.getContextPath()}/resources/assets/js/jquery.sparkline.min.js"></script>
+<script
+	src="${request.getContextPath()}/resources/assets/js/flot/jquery.flot.min.js"></script>
+<script
+	src="${request.getContextPath()}/resources/assets/js/flot/jquery.flot.pie.min.js"></script>
+<script
+	src="${request.getContextPath()}/resources/assets/js/flot/jquery.flot.resize.min.js"></script>
+
+<script type="text/javascript"> ace.vars['base'] = '..'; </script>
+<script
+	src="${request.getContextPath()}/resources/assets/js/elements.onpage-help.js"></script>
+<script
+	src="${request.getContextPath()}/resources/assets/js/ace.onpage-help.js"></script>
+<script
+	src="${request.getContextPath()}/resources/assets/js/language/html.js"></script>
+
+<script src="${request.getContextPath()}/resources/js/admin-home.js"></script>
+<script src="${request.getContextPath()}/resources/assets/js/excanvas.min.js"></script>

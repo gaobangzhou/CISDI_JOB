@@ -1,0 +1,225 @@
+
+
+<div class="row navbar-fixed-top text-center"
+	style="font-size: 18px; background-color: #0092EF;">
+	<p id="header" style="margin-top: 10px; color: White;">$!{HEADER}</p>
+</div>
+
+<div class="container"
+	style="padding-top: 60px; padding-bottom: 50px; background-color: background-color:     rgba(192, 215, 245, 0.19);">
+	<form class="form-horizontal" name="rsume-form" id="form-horizontal" style="margin-left:5%;">
+		<div class="form-group">
+			<label><i class="ace-icon fa fa-user red bigger-130"></i>姓名</label> <input
+				type="text" id="name" name="name" style="width:80%" value='$!{RESUME.getrName()}'$!{READONLY}>
+
+		</div>
+		<div class="form-group">
+			<label for="gender"
+				class="col-xs-2 control-label no-padding-right ace-icon fa fa-users red bigger-130 "></label>
+			<div class="col-xs-9 no-padding-left">
+				#if(${PAGETYPE}=="CREATE")
+				<div id="gender" class="no-padding-left">
+					<input id="man" type="radio" checked="checked" name="gender"
+						value="男" />男 <input id="woman" type="radio" name="gender"
+						style="margin-left: 30px;" value="女" />女
+				</div>
+
+				<label id="lbl_gender" class="control-label hidden">$!{RESUME.getrGender()}</label>
+
+				#else
+				<div id="gender" class="no-padding-left hidden">
+					<input id="man" type="radio" name="gender" value="男" />男 <input
+						id="woman" type="radio" name="gender" style="margin-left: 30px;"
+						value="女" />女
+				</div>
+				<div>
+					<label id="lbl_gender" class="control-label">${RESUME.getrGender()}</label>
+
+				</div>
+				#end
+			</div>
+		</div>
+		<div class="form-group">
+
+
+			<label for="native_place"><i
+				class="ace-icon fa fa-book red bigger-130"></i>籍贯</label> <input type="text"
+				id="native_place" name="native_place" style="width:80%"
+				value="$!{RESUME.getrNativePlace()}"$!{READONLY}>
+		</div>
+		<div class="form-group">
+		
+				<label for="education"><i
+					class="ace-icon fa fa-graduation-cap red bigger-130"></i> 教育经历</label> <select
+					class="fcontainer-select" id="education" name="education"
+					onchange="showeducation(this.value)"
+					value="$!{RESUME.getrEducation()}"$!{DISABLED}>
+					<option value="">请选择</option> #foreach($education in
+					$EducationList)
+
+					#if(${education.getCode()}==$!{RESUME.getrEducation()})
+					<option class="pull-right" value="${education.getCode()}"
+						selected="true">${education.getValue()}</option> #else
+					<option class="pull-right" value="${education.getCode()}">${education.getValue()}</option>
+					#end #end
+				</select>
+	
+
+		</div>
+		#if($!{RESUME.getrEducation()}=='doctor')
+		<div id="doctor" class="bachelor">
+			#else
+			<div id="doctor" class="bachelor hidden">
+				#end
+				<!--  -->
+				<label for="doctor" class="col-xs-3 control-label" align="right">博士</label>
+				<div class="col-xs-8 no-padding-left">
+					<input type="text" id="doctor_school" name="doctor_school"
+						class="form-control" placeholder="学校"
+						value="$!{RESUME.getrDoctorSchool()}"$!{READONLY}> <input
+						type="text" id="doctor_subject" name="doctor_subject"
+						class="form-control" placeholder="专业"
+						value="$!{RESUME.getrDoctorSubject()}"$!{READONLY}>
+				</div>
+			</div>
+			#if($!{RESUME.getrEducation()}=='master'||$!{RESUME.getrEducation()}=='doctor')
+			<div id="master" class="bachelor master">
+				#else
+				<div id="master" class=" bachelor master hidden">
+					#end <label for="master" class="col-xs-3 control-label"
+						align="right">硕士</label>
+					<div class="col-xs-8 no-padding-left">
+						<input type="text" id="master_school" class="form-control"
+							name="master_school" placeholder="学校"
+							value="$!{RESUME.getrMasterSchool()}"$!{READONLY}> <input
+							type="text" id="master_subject" name="master_subject"
+							class="form-control" placeholder="专业"
+							value="$!{RESUME.getrMasterSubject()}"$!{READONLY}>
+					</div>
+				</div>
+				#if($!{RESUME.getrEducation()}=='bachelor'||$!{RESUME.getrEducation()}=='master'||$!{RESUME.getrEducation()}=='doctor')
+				<div id="bachelor" class="bachelor master doctor">
+					#else
+					<div id="bachelor" class="bachelor master doctor hidden">
+						#end <label for="bachelor" class="col-xs-3 control-label"
+							align="right">本科</label>
+						<div class="col-xs-8 no-padding-left">
+							<input type="text" id="bachelor_school" class="form-control"
+								name="bachelor_school" placeholder="学校"
+								value="$!{RESUME.getrBachelorSchool()}"$!{READONLY}> <input
+								type="text" id="bachelor_subject" name="bachelor_subject"
+								class="form-control" placeholder="专业"
+								value="$!{RESUME.getrBachelorSubject()}"$!{READONLY}>
+						</div>
+					</div>
+
+					<div class="form-group">
+						
+
+							<label> <i class="ace-icon fa fa-language red bigger-150"></i>
+								英语水平
+							</label> <select id="english_lvl" name="english_lvl"
+								value="$!{RESUME.getrEnglishLVL()}"$!{DISABLED}>
+								<option value="">请选择</option> #foreach($egselection in
+								$EgScoreList)
+								#if(${egselection.getCode()}==$!{RESUME.getrEnglishLVL()})
+								<option class="pull-right" value="${egselection.getCode()}"
+									selected="true">${egselection.getValue()}</option> #else
+								<option class="pull-right" value="${egselection.getCode()}">${egselection.getValue()}</option>
+								#end #end
+							</select> <i class="ace-icon fa fa-star red bigger-130"
+								style="margin-left: 10px;"></i> <label for="phone_num">分数</label>
+							<input type="text" style="width: 12%;"
+								id="english_score" name="english_score"
+								value="$!{RESUME.getrEnglishScore()}" $!{READONLY}>
+
+
+						
+
+
+					</div>
+					<div class="form-group">
+						
+
+							<i class="ace-icon fa fa-university red bigger-130"></i> <label
+								for="phone_num">在校成绩</label> <select id="score" name="score"
+								class="fcontainer-select" value="$!{RESUME.getrScore()}"$!{DISABLED}>
+								<option value="">请选择</option> #foreach($selection in $ScoreList)
+								#if(${selection.getCode()}==$!{RESUME.getrScore()})
+								<option class="pull-right" value="${selection.getCode()}"
+									selected="true">${selection.getValue()}</option> #else
+								<option class="pull-right" value="${selection.getCode()}">${selection.getValue()}</option>
+								#end #end
+							</select>
+
+					
+
+					</div>
+					<div class="form-group">
+						<!--  -->
+
+						<label for="phone_num"><i
+							class="ace-icon fa fa-phone red bigger-150"></i>电话</label> <input
+							type="text" id="phone_num" name="phonenum" style="width:80%"
+							value="$!{RESUME.getrPhoneNum()}"$!{READONLY}>
+
+
+					</div>
+					<div class="form-group">
+						<label for="email"><i
+							class="ace-icon fa fa-envelope-o red bigger-130"></i>邮箱</label> <input
+							type="text" id="email" name="email" style="width:80%"
+							value="$!{RESUME.getrEmail()}"$!{READONLY}>
+
+					</div>
+
+					<div class="form-group">
+						<!-- <label for="others" class="col-xs-3 control-label">备注</label> -->
+						<div class="container">
+							<textarea id="others" name="others" rows="4" class="form-control"
+								placeholder="你想让我们了解的你（500字以内）" value="$!{RESUME.getrOthers()}"$!{READONLY}></textarea>
+						</div>
+					</div>
+					$!{CODE}
+					<div class="space-10"></div>
+					<div class="row navbar-fixed-bottom text-center"
+						style="font-size: 18px;">
+						#if(${PAGETYPE}=="CREATE")
+						<button type="button" id="btnsubmit"
+							class="btn btn-info navbar-btn col-xs-12">完成</button>
+						<button type="button" id="btneditor"
+							class="btn btn-warning navbar-btn col-xs-12 hidden">编辑</button>
+						#else
+						<button type="button" id="btnsubmit"
+							class="btn btn-info navbar-btn col-xs-12 hidden">完成</button>
+						<button type="button" id="btneditor"
+							class="btn btn-warning navbar-btn col-xs-12 ">编辑</button>
+						#end
+					</div>
+				</div>
+		<div class="modal fade" id="modal-job" tabindex="-1" role="dialog"
+		 aria-hidden="true">
+		<div class="modal-dialog">
+			<div  class="modal-content">
+				<div class="table-header" align="center">
+					<button type="button" class="close" data-dismiss="modal"
+						aria-hidden="true">
+						<span class="white">&times;</span>
+					</button>
+					提醒
+			 	  </div>
+				<div class="modal-body" >
+				<div class="center">						
+					<h5>微简历已经完成，请关闭微简历，到招聘页面申请您心仪的职位了!</h5>
+					</div>		
+			</div>
+	
+		</div>
+		<div class="modal-footer wizard-actions" id="modalFooter">
+				<button id="btnfinish" class="btn btn-success btn-sm" data-last="Finish" data-dismiss="modal" >
+					<i class="ace-icon fa fa-check"></i> 确认
+				</button>		
+			</div>
+	</div>
+</div>
+				<script src="${request.getContextPath()}/resources/js/resume.js"></script>

@@ -1,0 +1,25 @@
+.itemdiv.mymemberdiv {
+	width: 505px;
+	padding: 2px;
+	margin: 3px 5px;
+	float: left;
+	border-bottom: 1px solid #E8E8E8;
+}
+
+.itemdiv {
+	padding-right: 3px;
+	min-height: 89px;
+	position: relative;
+}
+
+.user-img {
+	display: inline-block;
+	width: 52px;
+	margin-left: 30px;
+	margin-top: 10px;
+}
+
+input[type=file] {
+	padding-top: 4px;
+	margin-bottom: 4px;
+}

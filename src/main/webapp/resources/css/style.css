@@ -1,0 +1,54 @@
+@charset "utf-8";
+/* CSS Document */
+
+html,body{
+	height:100%;
+	width:100%;
+	text-align: center;
+}
+html{
+	
+	background:url(../images/bg2.png) center;
+}
+ #reg{
+	position: absolute;
+	top: 30%;
+	left: 33%;
+	} 
+#user{
+	position: absolute;
+	left: 37px;
+	top: 85px;
+}
+#pass{
+	position: absolute;
+	left: 200px;
+	top: 85px;
+}
+#sub{
+	position: absolute;
+	left: 125px;
+	top: 165px;
+}
+  #user input:not([type=checkbox]){
+	  width:125px;
+	  padding:0.4em 0.25em 0.4em 1.5em;
+	  background:#FFF url(../images/u_name2.png) no-repeat 0 4px;
+	  }
+  #pass input:not([type=checkbox]){
+	  width:122px;
+	  padding:0.4em 0.25em 0.4em 1.5em;
+	  background:#FFF url(../images/u_pass2.png) no-repeat 0 4px;
+	  }
+#sub input:not([type=checkbox]){
+	width:120px;
+	background:#1982c4;
+	height:47px;
+	border-radius:4px;
+	}
+#u_submit{
+	font-family:"Trebuchet MS", Arial, Helvetica, sans-serif;
+	font-size:18px;
+	font-weight:bolder;
+	color:#3A006F;
+}

@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0" />
+    <title>微信招聘平台</title>
+    <link rel="stylesheet"
+	href="${request.getContextPath()}/resources/assets/css/bootstrap.min.css">
+	<link rel="stylesheet"
+	href="${request.getContextPath()}/resources/assets/css/font-awesome.min.css">
+	<link rel="stylesheet"
+	href="${request.getContextPath()}/resources/assets/css/ace.min.css"
+	id="main-ace-style" />
+<script type="text/javascript"
+	src="${request.getContextPath()}/resources/assets/js/jquery-1.7.2.js"></script>
+	<script
+	src="${request.getContextPath()}/resources/assets/js/bootstrap.min.js"></script>
+	<script
+	src="${request.getContextPath()}/resources/assets/js/bootbox.min.js"></script>
+</head>
+<body style="background-color:#F2F5F5">
+<div class="row navbar-fixed-top text-center"
+			style="font-size: 18px;background-color:#0092EF"><p style="margin-top:10px;color:white">应聘记录</p></div>
+<div class="row text-center" style="background-color:white;height: 30px;margin-top: 50px">
+    <p  style="margin-top: 5px">你当前共有$!{CONTENT}条应聘记录</p>
+</div><br>
+#foreach($MYAPPLY in $MYAPPLYS)
+<div class="container">	
+    <div class="col-xs-12 " style="background-color:white;border-left:solid 5px sandybrown">
+    	#if($!{MYAPPLY.getType()}=="FC")
+    	<span hidden id="myGuidFC"> $!{MYAPPLY.getMYGUID()}</span>
+    	#else
+    	<span hidden id="myGuidSC"> $!{MYAPPLY.getMYGUID()}</span>
+    	#end
+    	<!-- #if($!{MYAPPLY.getType()}=="FC") id="myGuidFC" #else id="myGuidSC" #end -->
+        <label class="control-label"><h3>$!{MYAPPLY.getJNAME()}</h3></label><span class="col-xs-offset-2">
+        #if($!{MYAPPLY.getType()}=="FC")
+        <span 
+				class="badge-success label">第一志愿</span>
+        #else
+         <span 
+				class="badge-success label">第二志愿</span>
+        #end
+        </span><br>
+        <span class="glyphicon glyphicon-map-marker"></span>
+        <label>$!{MYAPPLY.getJPLACE()}</label>
+        <span class="glyphicon glyphicon-hand-right col-xs-offset-2"></span>
+        <label>$!{MYAPPLY.getJTYPE()}</label>
+        <span class="fa fa-jpy col-xs-offset-2"></span>
+        <label>$!{MYAPPLY.getJPAYMENT()}</label><br><br>
+        <span class="glyphicon glyphicon-heart"></span>
+        <label>$!{MYAPPLY.getJCREATE_COM()}</label>
+        <span class="glyphicon glyphicon-time col-xs-offset-1"></span>
+        <label>$!{MYAPPLY.getCreatetime()}</label>
+        #if($!{MYAPPLY.getType()}=="FC")
+        <button class="btn btn-xs btn-info" style="margin-left: 15px" id="updateVolunterFC">
+				<i class="ace-icon fa fa-pencil bigger-120"></i>
+		</button> 
+		<button class="btn btn-xs btn-danger" id="deletVolunterFC" style="margin-left: 10px">
+			<i class="ace-icon fa fa-trash-o bigger-120"></i>
+		</button>
+		#else
+		<button class="btn btn-xs btn-info" style="margin-left: 15spx" id="updateVolunterSC">
+				<i class="ace-icon fa fa-pencil bigger-120"></i>
+		</button>
+		<button class="btn btn-xs btn-danger" id="deletVolunterSC">
+			<i class="ace-icon fa fa-trash-o bigger-120"></i>
+		</button>
+		#end
+    </div>
+</div><br>
+#end
+<script type="text/javascript">
+
+	 $(document).ready(function(){	
+		var myGuidFC = $("#myGuidFC").text();
+		var myGuidSC = $("#myGuidSC").text();
+		 $("#updateVolunterFC").click(function(){
+				//获得myapply的guid
+				bootbox.confirm("确定要修改为第二志愿吗！", function(result) {
+				if(result) {
+					window.location.href = "updateMyApply?myGuid="+myGuidFC+"&type=FC&myGuid1="+myGuidSC;
+				}
+			}); 
+			});
+		$("#updateVolunterSC").click(function(){
+			//获得myapply的guid
+			 bootbox.confirm("确定要修改为第一志愿吗！", function(result) {
+				if(result) {
+					window.location.href = "updateMyApply?myGuid="+myGuidSC+"&type=SC&myGuid1="+myGuidFC;
+				}
+			}); 
+		});
+		
+		$("#deletVolunterFC").click(function(){
+			 bootbox.confirm("确定要删除吗", function(result) {
+				if(result) {
+					window.location.href = "deleteMyApply?myGuid="+myGuidFC;
+				}
+			}); 
+			
+		});
+		$("#deletVolunterSC").click(function(){
+			bootbox.confirm("确定要删除吗", function(result) {
+				if(result) {
+					window.location.href = "deleteMyApply?myGuid="+myGuidSC;
+				}
+			});
+		});
+	});
+</script>
+</body>
+</html>

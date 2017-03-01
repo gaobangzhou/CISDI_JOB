@@ -1,0 +1,36 @@
+ #foreach($Job in $JobList)
+
+<tr>
+	<td>$!{Job.getJNAME()}</td>
+	<td>$!{Job.getJCREATE_COM()}</td>
+	<td>$!{Job.getJTYPE()}</td>
+	<td>$!{Job.getJEDUCATION()}</td>
+	<td>$!{Job.getJPLACE()}</td>
+	<td>
+		#if($!{Job.getJSTATUS()}=="used") <span
+			class="label label-sm label-success center">招聘中</span>
+			#else <span
+			class="label label-sm label-danger center">已删除</span> #end
+	</td>
+	<td>$!{Job.getJCREATE_TIME()}</td>
+	<td>
+		<div class="action-buttons">
+							<a class="blue" title="查看编辑" href="#modal-job"
+								onclick="lookAndEdit('$!{Job.getJGUID()}');" data-toggle="modal">
+								<i class="ace-icon fa fa-eye bigger-150"></i>
+							</a>
+							#if($!{Job.getJSTATUS()}=="used")
+							 <a class="red" title="删除" href="#"
+								onclick="editJobStatus('$!{Job.getJGUID()}','unused');"> <i
+								class="ace-icon fa fa-trash-o bigger-150"></i>
+							</a>
+							#else
+							<a class="green" title="还原" href="#"
+								onclick="editJobStatus('$!{Job.getJGUID()}','used');"> <i
+								class="ace-icon fa fa-share bigger-150"></i>
+							</a>
+							#end
+		</div>
+	</td>
+</tr>
+#end
