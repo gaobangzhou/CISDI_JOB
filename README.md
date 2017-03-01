@@ -1,0 +1,11 @@
+# CISDI_JOB
+使用SSM的架构搭建的基于微信公共服务号的企业招聘平台，为企业提供微信职位信息推广和职位招聘
+
+该程序使用Spring+SpringMVC+MyBatis的架构搭建的基于微信服务号的企业招聘平台，其中需要使用对应的AppId和AppSecret才能使用请修改AppConfig.java 中的变量
+，数据库使用的mysql，请运行对应的sql脚本来创建对应数据库中的表格，job.sql，请在spring-mybatis.xml中修改对应的dataSource连接数据库
+
+界面UI使用的是基于Bootstrap的css,js模版
+
+该项目仅限于学习和开源，项目中使用的图片和图标请勿商业使用，如有侵权与本程序无关，有其他问题可以咨询本人
+
+email： 250106768@qq.com
